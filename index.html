@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="The Hermetic Codex: A rational guide to ancient wisdom and modern logic. Explore the 7 Hermetic Principles, Mental Transmutation, and the Emerald Tablet.">
+    <meta name="theme-color" content="#292524">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>The Hermetic Codex: A Rational Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f5f5f0;
+            color: #292524;
+            overflow-x: hidden;
+        }
+        
+        .serif-header {
+            font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+        }
+
+        /* Chart Container - Mobile First */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+        }
+
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Interactive Card Hover Effects */
+        .principle-card {
+            transition: all 0.3s ease;
+        }
+        
+        @media (hover: hover) {
+            .principle-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+        }
+        
+        .principle-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #e7e5e4;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #a8a29e;
+            border-radius: 3px;
+        }
+
+        /* Mobile-friendly touch targets */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Range input styling for mobile */
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: transparent;
+            width: 100%;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            background: #d6d3d1;
+            border-radius: 4px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #57534e;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            background: #d6d3d1;
+            border-radius: 4px;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #57534e;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* Polarity buttons - horizontal scroll on mobile */
+        .polarity-buttons {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 0.5rem;
+        }
+
+        .polarity-buttons::-webkit-scrollbar {
+            display: none;
+        }
+
+        .polarity-btn {
+            flex-shrink: 0;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .polarity-btn.active {
+            background: #57534e;
+            color: white;
+            border-color: #57534e;
+        }
+
+        .polarity-btn:not(.active) {
+            background: #f5f5f0;
+            color: #57534e;
+            border-color: #d6d3d1;
+        }
+
+        /* Mobile menu animation */
+        #mobile-menu {
+            transition: all 0.3s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        #mobile-menu.open {
+            max-height: 400px;
+        }
+
+        /* Hamburger animation */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 28px;
+            height: 24px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #57534e;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Tablet card */
+        .tablet-card {
+            transition: all 0.3s ease;
+        }
+
+        .tablet-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Assessment labels - stack on mobile */
+        .assessment-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e7e5e4;
+        }
+
+        .assessment-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (min-width: 640px) {
+            .assessment-item {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        /* Gold shimmer effect */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .gold-accent {
+            background: linear-gradient(90deg, #d69e2e, #f6e05e, #d69e2e);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Subtle fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Hero section gradient */
+        .hero-gradient {
+            background: radial-gradient(ellipse at top, rgba(214, 158, 46, 0.1) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-[#f5f5f0] text-stone-800 antialiased selection:bg-stone-300 selection:text-stone-900">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-[#f5f5f0]/95 backdrop-blur-sm border-b border-stone-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <span class="serif-header text-xl sm:text-2xl font-bold tracking-tight text-stone-900">The Hermetic Codex</span>
+                </div>
+                <div class="hidden md:flex space-x-6 lg:space-x-8">
+                    <button onclick="navTo('principles')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">The 7 Principles</button>
+                    <button onclick="navTo('methodology')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">Methodology</button>
+                    <button onclick="navTo('source')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">Emerald Tablet</button>
+                    <button onclick="navTo('reflection')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">Self-Mastery</button>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="hamburger touch-target" id="hamburger" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden bg-stone-100 border-t border-stone-200">
+            <div class="px-4 py-3 space-y-1">
+                <button onclick="navTo('principles')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">The 7 Principles</button>
+                <button onclick="navTo('methodology')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">Methodology & Practice</button>
+                <button onclick="navTo('source')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">The Emerald Tablet</button>
+                <button onclick="navTo('reflection')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">Self-Mastery</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-12 sm:space-y-16">
+
+        <!-- Intro Section -->
+        <section id="intro" class="text-center max-w-3xl mx-auto hero-gradient pt-4 sm:pt-8 pb-8">
+            <h1 class="serif-header text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mb-4 sm:mb-6 fade-in">As Above, So Below</h1>
+            <p class="text-base sm:text-lg text-stone-700 leading-relaxed mb-6 sm:mb-8 px-2 fade-in" style="animation-delay: 0.1s;">
+                Welcome to the intersection of ancient wisdom and modern logic. You seek a methodology, not just history. 
+                Hermeticism, attributed to <strong>Hermes Trismegistus</strong> (the Greek parallel to the Egyptian <strong>Thoth</strong>), 
+                is not a religion of blind faith, but a philosophy of <strong>Universal Law</strong>.
+            </p>
+            <div class="h-1 w-20 sm:w-24 bg-gradient-to-r from-stone-300 via-amber-500 to-stone-300 mx-auto rounded-full"></div>
+        </section>
+
+        <!-- SECTION 1: The 7 Principles -->
+        <section id="principles" class="scroll-mt-20">
+            <div class="mb-6 sm:mb-8">
+                <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-3 sm:mb-4">I. The 7 Hermetic Principles</h2>
+                <p class="text-stone-600 text-sm sm:text-base max-w-4xl">
+                    The Kybalion outlines seven immutable laws. For a logical mind, treat these not as religious dogmas, but as 
+                    <strong>axioms of the system</strong>. Tap any card to explore its logical application.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="principles-grid">
+                <!-- Cards injected via JS -->
+            </div>
+            
+            <!-- Principle Detail View -->
+            <div id="principle-detail" class="hidden mt-6 sm:mt-8 bg-white border border-stone-200 rounded-xl shadow-lg p-5 sm:p-6 md:p-8 transition-all">
+                <div class="flex flex-col gap-4 sm:gap-6">
+                    <div class="flex-1">
+                        <h3 id="detail-title" class="serif-header text-xl sm:text-2xl font-bold text-stone-800 mb-2"></h3>
+                        <p id="detail-desc" class="text-stone-600 mb-4 italic text-sm sm:text-base"></p>
+                        <div class="bg-stone-50 p-4 rounded-lg border-l-4 border-amber-500">
+                            <h4 class="font-bold text-xs sm:text-sm text-stone-900 uppercase tracking-wide mb-1">Logical Application</h4>
+                            <p id="detail-app" class="text-stone-700 text-sm sm:text-base"></p>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <div class="bg-stone-900 text-stone-100 p-4 sm:p-5 rounded-lg shadow-lg">
+                            <h4 class="font-bold text-xs sm:text-sm uppercase tracking-wide mb-2 border-b border-stone-700 pb-2">The Practice</h4>
+                            <p id="detail-practice" class="text-sm leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="closePrincipleDetail()" class="mt-4 w-full sm:w-auto px-4 py-2 text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">
+                    ← Back to Principles
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Methodology -->
+        <section id="methodology" class="scroll-mt-20 border-t border-stone-200 pt-12 sm:pt-16">
+            <div class="mb-6 sm:mb-8">
+                <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-3 sm:mb-4">II. The Methodology of Transmutation</h2>
+                <p class="text-stone-600 text-sm sm:text-base max-w-3xl">
+                    Based on the <em>Principle of Polarity</em>, emotions are not fixed entities but degrees on a sliding scale. 
+                    Fear and Courage are the same thing, just at different frequencies. We do not destroy emotions; we <strong>transmute</strong> them.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                <!-- Interactive Transmutation Tool -->
+                <div class="bg-white p-5 sm:p-6 rounded-xl border border-stone-200 shadow-sm order-2 lg:order-1">
+                    <h3 class="serif-header text-lg sm:text-xl font-bold text-stone-800 mb-3 sm:mb-4">Interactive Polarity Scale</h3>
+                    <p class="text-xs sm:text-sm text-stone-500 mb-4 sm:mb-6">
+                        Select an emotional axis below. Use the slider to visualize transmutation — raising your vibration.
+                    </p>
+                    
+                    <div class="polarity-buttons mb-6">
+                        <button onclick="setPolarity('fear')" id="btn-fear" class="polarity-btn active">Fear ↔ Courage</button>
+                        <button onclick="setPolarity('grief')" id="btn-grief" class="polarity-btn">Grief ↔ Peace</button>
+                        <button onclick="setPolarity('lethargy')" id="btn-lethargy" class="polarity-btn">Lethargy ↔ Passion</button>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="polarityChart"></canvas>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-stone-700 mb-3">Apply Willpower (Vibration)</label>
+                        <input type="range" id="vibrationSlider" min="0" max="100" value="20" class="w-full">
+                        <div class="flex justify-between text-xs text-stone-500 mt-2">
+                            <span>Lead (Passive)</span>
+                            <span>Gold (Active)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Practical List -->
+                <div class="space-y-4 sm:space-y-6 order-1 lg:order-2">
+                    <div class="bg-stone-50 p-4 sm:p-6 rounded-xl border border-stone-200">
+                        <h4 class="font-bold text-stone-900 mb-2 text-sm sm:text-base">Meditation & Mindfulness</h4>
+                        <p class="text-xs sm:text-sm text-stone-700 mb-2">
+                            <strong>Principle:</strong> Mentalism ("The All is Mind").
+                        </p>
+                        <p class="text-xs sm:text-sm text-stone-600">
+                            <em>Practice:</em> 10 minutes daily observing thoughts as external objects. Do not judge; just observe.
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-50 p-4 sm:p-6 rounded-xl border border-stone-200">
+                        <h4 class="font-bold text-stone-900 mb-2 text-sm sm:text-base">Passion & Restraint</h4>
+                        <p class="text-xs sm:text-sm text-stone-700 mb-2">
+                            <strong>Principle:</strong> Rhythm (The Pendulum Swing).
+                        </p>
+                        <p class="text-xs sm:text-sm text-stone-600">
+                            <em>Practice:</em> "Neutralization". When you feel extreme joy, stay grounded. Maintain the "Upper Path" of stability.
+                        </p>
+                    </div>
+
+                    <div class="bg-stone-50 p-4 sm:p-6 rounded-xl border border-stone-200">
+                        <h4 class="font-bold text-stone-900 mb-2 text-sm sm:text-base">Prayer & Hope</h4>
+                        <p class="text-xs sm:text-sm text-stone-700 mb-2">
+                            <strong>Principle:</strong> Cause and Effect.
+                        </p>
+                        <p class="text-xs sm:text-sm text-stone-600">
+                            <em>Practice:</em> Replace "Hope" with "Alignment". Speak intent as if it has occurred. "I am peaceful" sets a vibration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: The Emerald Tablet -->
+        <section id="source" class="scroll-mt-20 border-t border-stone-200 pt-12 sm:pt-16">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-4 sm:mb-6">III. The Emerald Tablet</h2>
+            <p class="text-stone-600 text-sm sm:text-base mb-6 sm:mb-8 max-w-3xl">
+                Attributed to Hermes Trismegistus — the cryptic source of alchemical wisdom. 
+                Tap on the cryptic text to reveal the <strong>Logical Interpretation</strong>.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="tablet-grid">
+                <!-- Tablet content injected via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION 4: Self-Reflection -->
+        <section id="reflection" class="scroll-mt-20 border-t border-stone-200 pt-12 sm:pt-16 pb-12 sm:pb-20">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-4 sm:mb-6">IV. The Alchemist's Balance</h2>
+            <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+                <div class="w-full lg:w-1/2">
+                    <p class="text-stone-600 text-sm sm:text-base mb-6">
+                        Progress in Hermeticism requires balance. A purely logical mind without action is stagnant. 
+                        Use this chart to visualize your current "Alchemical Configuration".
+                    </p>
+                    
+                    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-stone-200">
+                        <h4 class="font-bold text-stone-800 mb-4 text-sm sm:text-base">Self-Assessment Quick-Check:</h4>
+                        <div class="space-y-1">
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Logic / Study (Mentalism)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(0, this.value)" min="1" max="10" value="8">
+                            </div>
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Adaptability (Correspondence)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(1, this.value)" min="1" max="10" value="6">
+                            </div>
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Energy / Health (Vibration)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(2, this.value)" min="1" max="10" value="5">
+                            </div>
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Emotional Control (Polarity)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(3, this.value)" min="1" max="10" value="4">
+                            </div>
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Consistency (Rhythm)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(4, this.value)" min="1" max="10" value="5">
+                            </div>
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Action / Discipline (Cause & Effect)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(5, this.value)" min="1" max="10" value="7">
+                            </div>
+                            <div class="assessment-item">
+                                <span class="text-sm text-stone-700">Creativity / Balance (Gender)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(6, this.value)" min="1" max="10" value="6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2 flex justify-center items-center">
+                    <div class="chart-container w-full max-w-md">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-8 sm:py-10 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="serif-header text-base sm:text-lg text-stone-300 mb-2">"The lips of wisdom are closed, except to the ears of Understanding."</p>
+            <p class="text-xs sm:text-sm opacity-60">- The Kybalion</p>
+            <div class="mt-6 sm:mt-8 text-xs text-stone-600">
+                A tool for the Rational Mystic. Generated for research and practice.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA & STATE ---
+
+        const principlesData = [
+            {
+                id: 1,
+                title: "I. Mentalism",
+                desc: "The All is Mind; The Universe is Mental.",
+                app: "Reality is a projection of consciousness. To change your external world, you must first change your internal thoughts/beliefs.",
+                practice: "Mindfulness. Monitor your internal monologue. If the Universe is mental, your thoughts are the code running the simulation. Debug them."
+            },
+            {
+                id: 2,
+                title: "II. Correspondence",
+                desc: "As above, so below; as below, so above.",
+                app: "Patterns repeat on all scales (fractals). Understanding the atom helps understand the solar system. Understanding your emotions helps understand human nature.",
+                practice: "Study patterns. If you feel chaos inside, look for chaos in your environment (messy room, unfinished tasks). Fix the 'Below' to fix the 'Above'."
+            },
+            {
+                id: 3,
+                title: "III. Vibration",
+                desc: "Nothing rests; everything moves; everything vibrates.",
+                app: "Science confirms matter is just energy vibrating at slow speeds. Moods and thoughts are also vibrations. High vibes (Love) dissolve low vibes (Fear).",
+                practice: "State Management. You can change your mental state by forcing a physical change (breathing, movement, music). You are tuning an instrument."
+            },
+            {
+                id: 4,
+                title: "IV. Polarity",
+                desc: "Everything is dual; everything has poles; opposites are identical in nature, but different in degree.",
+                app: "Hot and Cold are the same thing (Temperature). Hate and Love are the same thing (Emotional Attachment). You can slide from one to the other.",
+                practice: "Transmutation. When you feel Fear, do not fight it. Recognize it as the same energy as Courage, just low frequency. Dial it up."
+            },
+            {
+                id: 5,
+                title: "V. Rhythm",
+                desc: "Everything flows, out and in; everything has its tides.",
+                app: "Life acts like a pendulum. Highs follow lows. Motivation follows burnout. This is natural law, not personal failure.",
+                practice: "Neutralization. When you hit a 'low' period, don't panic. Know it is the backswing. Rest, wait, and prepare for the inevitable forward swing."
+            },
+            {
+                id: 6,
+                title: "VI. Cause & Effect",
+                desc: "Every Cause has its Effect; every Effect has its Cause.",
+                app: "There is no 'Chance'. Luck is just a name for law not recognized. You are either a Master (Causing things) or a Pawn (Effect of others).",
+                practice: "Proactivity. Stop reacting to life. Initiate action. Plant seeds (Causes) deliberately to harvest specific crops (Effects)."
+            },
+            {
+                id: 7,
+                title: "VII. Gender",
+                desc: "Gender is in everything; everything has its Masculine and Feminine principles.",
+                app: "Not biological sex. Masculine is Will/Projective. Feminine is Creative/Receptive. Balance is needed for creation.",
+                practice: "Balance. Are you all 'Will' (Burnout)? Or all 'Dreaming' (Stagnation)? Combine the Will to Act with the Patience to Nurture."
+            }
+        ];
+
+        const tabletData = [
+            {
+                verse: "Tis true without lying, certain & most true.",
+                logic: "This is an affirmation of objective reality. The Alchemist seeks Truth, not illusion."
+            },
+            {
+                verse: "That which is below is like that which is above...",
+                logic: "The Holographic Universe theory. The macrocosm reflects the microcosm. By changing yourself (micro), you influence your reality (macro)."
+            },
+            {
+                verse: "And as all things have been & arose from one...",
+                logic: "The Singularity. All matter and energy come from a single source (The All). We are all connected by origin."
+            },
+            {
+                verse: "The Sun is its father, the moon its mother...",
+                logic: "Symbolism for elements: Sun (Active/Fire), Moon (Passive/Water), Wind (Air/Mind), Earth (Matter/Body). Harmony of elements is key."
+            },
+            {
+                verse: "Separate thou the earth from the fire, the subtle from the gross...",
+                logic: "CRITICAL PRACTICE: Separate facts (earth) from emotions (fire). Distinguish subtle truth from gross noise. Do this calmly and with effort."
+            },
+            {
+                verse: "Its force or power is entire if it be converted into earth.",
+                logic: "Wisdom is useless unless grounded. Theory must become Action. Logic must become Practice."
+            }
+        ];
+
+        // --- CHART INSTANCES ---
+        let polarityChartInstance = null;
+        let radarChartInstance = null;
+
+        // --- DOM ELEMENTS ---
+        const principlesGrid = document.getElementById('principles-grid');
+        const detailSection = document.getElementById('principle-detail');
+        const tabletGrid = document.getElementById('tablet-grid');
+        const slider = document.getElementById('vibrationSlider');
+
+        // --- INITIALIZATION ---
+
+        function init() {
+            renderPrinciples();
+            renderTablet();
+            initPolarityChart();
+            initRadarChart();
+
+            slider.addEventListener('input', (e) => {
+                updatePolarityChart(e.target.value);
+            });
+        }
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderPrinciples() {
+            principlesGrid.innerHTML = principlesData.map(p => `
+                <div onclick="showPrincipleDetail(${p.id})" class="principle-card bg-white p-5 sm:p-6 rounded-xl border border-stone-200 cursor-pointer group">
+                    <h3 class="serif-header text-lg sm:text-xl font-bold text-stone-700 group-hover:text-stone-900 mb-2">${p.title}</h3>
+                    <p class="text-xs sm:text-sm text-stone-500 line-clamp-2">${p.desc}</p>
+                    <div class="mt-4 flex items-center text-xs font-bold text-stone-400 uppercase tracking-widest group-hover:text-amber-600">
+                        Explore <span class="ml-1">→</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showPrincipleDetail(id) {
+            const p = principlesData.find(item => item.id === id);
+            
+            document.getElementById('detail-title').innerText = p.title;
+            document.getElementById('detail-desc').innerText = `"${p.desc}"`;
+            document.getElementById('detail-app').innerText = p.app;
+            document.getElementById('detail-practice').innerText = p.practice;
+
+            detailSection.classList.remove('hidden');
+            
+            setTimeout(() => {
+                detailSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function closePrincipleDetail() {
+            detailSection.classList.add('hidden');
+        }
+
+        function renderTablet() {
+            tabletGrid.innerHTML = tabletData.map((t, index) => `
+                <div onclick="toggleTabletLogic(${index})" class="tablet-card bg-stone-800 p-4 sm:p-5 rounded-xl border border-stone-700 cursor-pointer hover:bg-stone-700 active:bg-stone-750 transition-colors">
+                    <p class="serif-header text-stone-200 text-base sm:text-lg italic mb-2">"${t.verse}"</p>
+                    <div id="tablet-logic-${index}" class="hidden mt-3 pt-3 border-t border-stone-600">
+                        <p class="text-stone-300 text-xs sm:text-sm"><span class="font-bold text-amber-400">Logic:</span> ${t.logic}</p>
+                    </div>
+                    <div class="text-center mt-2">
+                        <span id="tablet-hint-${index}" class="text-xs text-stone-500 uppercase tracking-widest">Tap to Decode</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleTabletLogic(index) {
+            const el = document.getElementById(`tablet-logic-${index}`);
+            const hint = document.getElementById(`tablet-hint-${index}`);
+            const isHidden = el.classList.contains('hidden');
+            
+            el.classList.toggle('hidden');
+            hint.innerText = isHidden ? 'Tap to Hide' : 'Tap to Decode';
+        }
+
+        // --- CHARTS ---
+
+        function initPolarityChart() {
+            const ctx = document.getElementById('polarityChart').getContext('2d');
+            
+            polarityChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Current State'],
+                    datasets: [
+                        {
+                            label: 'Fear (Lead)',
+                            data: [80],
+                            backgroundColor: '#a8a29e',
+                            barThickness: 50
+                        },
+                        {
+                            label: 'Courage (Gold)',
+                            data: [20],
+                            backgroundColor: '#d69e2e',
+                            barThickness: 50
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            stacked: true,
+                            max: 100,
+                            display: false
+                        },
+                        y: {
+                            stacked: true,
+                            display: false
+                        }
+                    },
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 16,
+                                font: { size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        let currentAxis = { neg: 'Fear', pos: 'Courage' };
+
+        function setPolarity(type) {
+            const sliderVal = document.getElementById('vibrationSlider');
+            sliderVal.value = 20;
+            
+            // Update button states
+            document.querySelectorAll('.polarity-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${type}`).classList.add('active');
+            
+            if(type === 'fear') currentAxis = { neg: 'Fear', pos: 'Courage' };
+            if(type === 'grief') currentAxis = { neg: 'Grief', pos: 'Peace' };
+            if(type === 'lethargy') currentAxis = { neg: 'Lethargy', pos: 'Passion' };
+
+            polarityChartInstance.data.datasets[0].label = `${currentAxis.neg} (Lead)`;
+            polarityChartInstance.data.datasets[1].label = `${currentAxis.pos} (Gold)`;
+            
+            updatePolarityChart(20);
+        }
+
+        function updatePolarityChart(val) {
+            const positiveVal = parseInt(val);
+            const negativeVal = 100 - positiveVal;
+
+            polarityChartInstance.data.datasets[0].data = [negativeVal];
+            polarityChartInstance.data.datasets[1].data = [positiveVal];
+            
+            if (positiveVal > 60) {
+                polarityChartInstance.data.datasets[1].backgroundColor = '#b45309';
+            } else {
+                polarityChartInstance.data.datasets[1].backgroundColor = '#d69e2e';
+            }
+
+            polarityChartInstance.update();
+        }
+
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Mentalism', 'Correspondence', 'Vibration', 'Polarity', 'Rhythm', 'Cause & Effect', 'Gender'],
+                    datasets: [{
+                        label: 'Your Alchemical Balance',
+                        data: [8, 6, 5, 4, 5, 7, 6],
+                        fill: true,
+                        backgroundColor: 'rgba(214, 158, 46, 0.2)',
+                        borderColor: '#b45309',
+                        pointBackgroundColor: '#78350f',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#78350f'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: { borderWidth: 2 }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e7e5e4' },
+                            grid: { color: '#e7e5e4' },
+                            pointLabels: {
+                                font: { size: 10, family: 'Inter' },
+                                color: '#44403c'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function updateRadar(index, value) {
+            radarChartInstance.data.datasets[0].data[index] = parseInt(value);
+            radarChartInstance.update();
+        }
+
+        // --- NAVIGATION ---
+        
+        function navTo(sectionId) {
+            const el = document.getElementById(sectionId);
+            if(el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+                closeMobileMenu();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger');
+            
+            menu.classList.toggle('open');
+            hamburger.classList.toggle('open');
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger');
+            
+            menu.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+
+        // Start App
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
