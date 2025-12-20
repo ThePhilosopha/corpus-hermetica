@@ -1,32 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="The Hermetic Codex: A rational guide to ancient wisdom and modern logic. Explore the 7 Hermetic Principles, Mental Transmutation, and the Emerald Tablet.">
+    <meta name="description"
+        content="The Hermetic Codex: A rational guide to ancient wisdom and modern logic. Explore the 7 Hermetic Principles, Mental Transmutation, and the Emerald Tablet.">
     <meta name="theme-color" content="#292524">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>The Hermetic Codex: A Rational Guide</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ===== CSS CUSTOM PROPERTIES FOR THEMING ===== */
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #f5f5f0;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #fafaf9;
+            --bg-nav: rgba(245, 245, 240, 0.95);
+            --bg-card-dark: #292524;
+
+            --text-primary: #292524;
+            --text-secondary: #57534e;
+            --text-muted: #78716c;
+            --text-light: #a8a29e;
+
+            --border-primary: #d6d3d1;
+            --border-secondary: #e7e5e4;
+
+            --accent-gold: #d69e2e;
+            --accent-gold-bright: #f6e05e;
+            --accent-amber: #b45309;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-glow: 0 0 20px rgba(214, 158, 46, 0.15);
+
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Dark Mode Colors */
+        .dark {
+            --bg-primary: #0c0a09;
+            --bg-secondary: #1c1917;
+            --bg-tertiary: #292524;
+            --bg-nav: rgba(12, 10, 9, 0.95);
+            --bg-card-dark: #1c1917;
+
+            --text-primary: #fafaf9;
+            --text-secondary: #d6d3d1;
+            --text-muted: #a8a29e;
+            --text-light: #78716c;
+
+            --border-primary: #44403c;
+            --border-secondary: #292524;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 30px rgba(214, 158, 46, 0.2);
+        }
+
         * {
             -webkit-tap-highlight-color: transparent;
         }
-        
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #f5f5f0;
-            color: #292524;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             overflow-x: hidden;
+            transition: background-color var(--transition-base), color var(--transition-base);
         }
-        
+
         .serif-header {
             font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+        }
+
+        /* ===== DARK MODE TOGGLE ===== */
+        .theme-toggle {
+            position: relative;
+            width: 56px;
+            height: 28px;
+            background: var(--border-primary);
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: 2px solid var(--border-secondary);
+        }
+
+        .theme-toggle:hover {
+            box-shadow: var(--shadow-glow);
+        }
+
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            transition: transform var(--transition-bounce);
+            box-shadow: var(--shadow-md);
+        }
+
+        .dark .theme-toggle::before {
+            transform: translateX(28px);
+        }
+
+        .theme-toggle .sun-icon,
+        .theme-toggle .moon-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            transition: opacity var(--transition-base);
+        }
+
+        .theme-toggle .sun-icon {
+            right: 6px;
+            opacity: 1;
+        }
+
+        .theme-toggle .moon-icon {
+            left: 6px;
+            opacity: 0.4;
+        }
+
+        .dark .theme-toggle .sun-icon {
+            opacity: 0.4;
+        }
+
+        .dark .theme-toggle .moon-icon {
+            opacity: 1;
         }
 
         /* Chart Container - Mobile First */
@@ -51,32 +173,192 @@
             }
         }
 
-        /* Interactive Card Hover Effects */
+        /* ===== ENHANCED CARD ANIMATIONS ===== */
         .principle-card {
-            transition: all 0.3s ease;
+            transition: all var(--transition-base);
+            background-color: var(--bg-secondary);
+            border-color: var(--border-secondary);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .principle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(214, 158, 46, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
         @media (hover: hover) {
             .principle-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                transform: translateY(-4px) scale(1.01);
+                box-shadow: var(--shadow-lg), var(--shadow-glow);
+                border-color: var(--accent-gold);
+            }
+
+            .principle-card:hover::before {
+                left: 100%;
             }
         }
-        
+
         .principle-card:active {
             transform: scale(0.98);
         }
 
-        /* Custom Scrollbar */
+        /* ===== SCROLL REVEAL ANIMATIONS ===== */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+        }
+
+        .reveal.revealed {
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .reveal-delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .reveal-delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .reveal-delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        .reveal-delay-6 {
+            animation-delay: 0.6s;
+        }
+
+        .reveal-delay-7 {
+            animation-delay: 0.7s;
+        }
+
+        /* ===== FLOATING PARTICLES BACKGROUND ===== */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+
+            10% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 0.15;
+            }
+
+            90% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) scale(1);
+            }
+        }
+
+        /* Custom Scrollbar with theming */
         .custom-scroll::-webkit-scrollbar {
             width: 6px;
         }
+
         .custom-scroll::-webkit-scrollbar-track {
-            background: #e7e5e4;
+            background: var(--border-secondary);
         }
+
         .custom-scroll::-webkit-scrollbar-thumb {
-            background: #a8a29e;
+            background: var(--text-light);
             border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
         }
 
         /* Mobile-friendly touch targets */
@@ -85,12 +367,7 @@
             min-width: 44px;
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Range input styling for mobile */
+        /* Range input styling for mobile - with theming */
         input[type="range"] {
             -webkit-appearance: none;
             background: transparent;
@@ -100,8 +377,9 @@
         input[type="range"]::-webkit-slider-runnable-track {
             width: 100%;
             height: 8px;
-            background: #d6d3d1;
+            background: var(--border-primary);
             border-radius: 4px;
+            transition: background var(--transition-base);
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -109,16 +387,22 @@
             height: 24px;
             width: 24px;
             border-radius: 50%;
-            background: #57534e;
+            background: var(--accent-gold);
             cursor: pointer;
             margin-top: -8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-bounce), box-shadow var(--transition-base);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: var(--shadow-glow);
         }
 
         input[type="range"]::-moz-range-track {
             width: 100%;
             height: 8px;
-            background: #d6d3d1;
+            background: var(--border-primary);
             border-radius: 4px;
         }
 
@@ -126,13 +410,13 @@
             height: 24px;
             width: 24px;
             border-radius: 50%;
-            background: #57534e;
+            background: var(--accent-gold);
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-md);
         }
 
-        /* Polarity buttons - horizontal scroll on mobile */
+        /* Polarity buttons - with theming */
         .polarity-buttons {
             display: flex;
             gap: 0.5rem;
@@ -153,34 +437,57 @@
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 600;
-            transition: all 0.2s ease;
+            transition: all var(--transition-bounce);
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .polarity-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .polarity-btn:hover::before {
+            opacity: 1;
         }
 
         .polarity-btn.active {
-            background: #57534e;
-            color: white;
-            border-color: #57534e;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 20px rgba(214, 158, 46, 0.3);
+            transform: scale(1.02);
         }
 
         .polarity-btn:not(.active) {
-            background: #f5f5f0;
-            color: #57534e;
-            border-color: #d6d3d1;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-color: var(--border-primary);
         }
 
-        /* Mobile menu animation */
+        .polarity-btn:not(.active):hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile menu animation - enhanced */
         #mobile-menu {
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             max-height: 0;
             overflow: hidden;
+            background: var(--bg-tertiary);
         }
 
         #mobile-menu.open {
             max-height: 400px;
         }
 
-        /* Hamburger animation */
+        /* Hamburger animation - enhanced */
         .hamburger {
             display: flex;
             flex-direction: column;
@@ -195,9 +502,9 @@
             display: block;
             width: 100%;
             height: 2px;
-            background: #57534e;
+            background: var(--text-secondary);
             border-radius: 2px;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .hamburger.open span:nth-child(1) {
@@ -206,32 +513,57 @@
 
         .hamburger.open span:nth-child(2) {
             opacity: 0;
+            transform: scaleX(0);
         }
 
         .hamburger.open span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* Tablet card */
+        /* Tablet card - with theming and animations */
         .tablet-card {
-            transition: all 0.3s ease;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tablet-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(214, 158, 46, 0.1) 100%);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .tablet-card:hover::after {
+            opacity: 1;
         }
 
         .tablet-card:active {
             transform: scale(0.98);
         }
 
-        /* Assessment labels - stack on mobile */
+        /* Assessment labels - with theming */
         .assessment-item {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
             padding: 0.75rem 0;
-            border-bottom: 1px solid #e7e5e4;
+            border-bottom: 1px solid var(--border-secondary);
+            transition: background var(--transition-base);
         }
 
         .assessment-item:last-child {
             border-bottom: none;
+        }
+
+        .assessment-item:hover {
+            background: var(--bg-tertiary);
+            margin: 0 -0.5rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            border-radius: 8px;
         }
 
         @media (min-width: 640px) {
@@ -242,54 +574,664 @@
             }
         }
 
-        /* Gold shimmer effect */
+        /* ===== GOLD SHIMMER EFFECT - ENHANCED ===== */
         @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
 
         .gold-accent {
-            background: linear-gradient(90deg, #d69e2e, #f6e05e, #d69e2e);
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-bright), var(--accent-gold));
             background-size: 200% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
         }
 
-        /* Subtle fade-in animation */
+        /* ===== PULSE GLOW ANIMATION ===== */
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 5px rgba(214, 158, 46, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(214, 158, 46, 0.4);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* Subtle fade-in animation - enhanced */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .fade-in {
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        /* Hero section gradient */
+        /* ===== HERO SECTION GRADIENT - ENHANCED ===== */
         .hero-gradient {
-            background: radial-gradient(ellipse at top, rgba(214, 158, 46, 0.1) 0%, transparent 50%);
+            background: radial-gradient(ellipse at top, rgba(214, 158, 46, 0.12) 0%, transparent 50%);
+            position: relative;
+        }
+
+        .dark .hero-gradient {
+            background: radial-gradient(ellipse at top, rgba(214, 158, 46, 0.08) 0%, transparent 50%);
+        }
+
+        /* ===== ACCENT LINE ANIMATION ===== */
+        @keyframes expandLine {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+
+            to {
+                width: 6rem;
+                opacity: 1;
+            }
+        }
+
+        .accent-line {
+            animation: expandLine 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 0.5s;
+            width: 0;
+        }
+
+        /* ===== BUTTON RIPPLE EFFECT ===== */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(214, 158, 46, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+            opacity: 0;
+        }
+
+        .ripple:active::after {
+            width: 200%;
+            height: 200%;
+            opacity: 0;
+        }
+
+        /* ===== NAV LINKS HOVER ANIMATION ===== */
+        .nav-link {
+            position: relative;
+            transition: color var(--transition-base);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width var(--transition-base), left var(--transition-base);
+            border-radius: 1px;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* ===== DETAIL PANEL ANIMATION ===== */
+        #principle-detail {
+            transform-origin: top;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #principle-detail:not(.hidden) {
+            animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* ===== THEMED BACKGROUNDS ===== */
+        .bg-themed {
+            background-color: var(--bg-secondary);
+            transition: background-color var(--transition-base);
+        }
+
+        .bg-themed-tertiary {
+            background-color: var(--bg-tertiary);
+            transition: background-color var(--transition-base);
+        }
+
+        .border-themed {
+            border-color: var(--border-secondary);
+            transition: border-color var(--transition-base);
+        }
+
+        .text-themed {
+            color: var(--text-primary);
+            transition: color var(--transition-base);
+        }
+
+        .text-themed-secondary {
+            color: var(--text-secondary);
+            transition: color var(--transition-base);
+        }
+
+        .text-themed-muted {
+            color: var(--text-muted);
+            transition: color var(--transition-base);
+        }
+
+        /* ===== SELECTION STYLING ===== */
+        ::selection {
+            background: rgba(214, 158, 46, 0.3);
+            color: var(--text-primary);
+        }
+
+        /* ===== FOCUS STATES ===== */
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible {
+            outline: 2px solid var(--accent-gold);
+            outline-offset: 2px;
+        }
+
+        /* ===== DAILY ALIGNMENT RITUAL ===== */
+        .ritual-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ritual-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(214, 158, 46, 0.03), transparent 30%);
+            animation: rotateGlow 20s linear infinite;
+        }
+
+        @keyframes rotateGlow {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .planetary-symbol {
+            font-size: 3rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 10px rgba(214, 158, 46, 0.3));
+        }
+
+        .moon-phase-icon {
+            font-size: 2rem;
+            animation: moonPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes moonPulse {
+
+            0%,
+            100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .breath-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .breath-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--accent-gold);
+            animation: breathRotate 12s linear infinite;
+        }
+
+        @keyframes breathRotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .breath-inner {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(214, 158, 46, 0.3), transparent);
+            animation: breathScale 12s ease-in-out infinite;
+        }
+
+        @keyframes breathScale {
+
+            0%,
+            100% {
+                transform: scale(0.5);
+                opacity: 0.3;
+            }
+
+            25% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            75% {
+                transform: scale(0.5);
+                opacity: 0.3;
+            }
+        }
+
+        /* ===== ORACLE SPREAD ===== */
+        .oracle-container {
+            perspective: 1000px;
+        }
+
+        .oracle-card {
+            width: 100%;
+            max-width: 200px;
+            height: 280px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .oracle-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .oracle-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            border: 2px solid var(--border-primary);
+        }
+
+        .oracle-card-back {
+            background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #1c1917 100%);
+            border-color: var(--accent-gold);
+        }
+
+        .oracle-card-back::before {
+            content: '☿';
+            font-size: 4rem;
+            color: var(--accent-gold);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .oracle-card-back::after {
+            content: '';
+            position: absolute;
+            inset: 10px;
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            opacity: 0.3;
+        }
+
+        .oracle-card-front {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            transform: rotateY(180deg);
+        }
+
+        .oracle-position-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .oracle-principle-num {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .oracle-principle-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        /* Oracle synthesis animation */
+        @keyframes oracleSynthesis {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .oracle-synthesis {
+            animation: oracleSynthesis 0.6s ease-out forwards;
+        }
+
+        /* ===== EMERALD CONTEMPLATION MODE ===== */
+        .contemplation-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .contemplation-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .contemplation-content {
+            max-width: 800px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Sacred geometry background */
+        .sacred-geometry {
+            position: absolute;
+            inset: -100px;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Ccircle cx='200' cy='200' r='150' fill='none' stroke='%23d69e2e' stroke-width='0.5'/%3E%3Ccircle cx='200' cy='200' r='100' fill='none' stroke='%23d69e2e' stroke-width='0.5'/%3E%3Ccircle cx='200' cy='200' r='50' fill='none' stroke='%23d69e2e' stroke-width='0.5'/%3E%3Cpolygon points='200,50 350,200 200,350 50,200' fill='none' stroke='%23d69e2e' stroke-width='0.5'/%3E%3Cpolygon points='200,100 300,200 200,300 100,200' fill='none' stroke='%23d69e2e' stroke-width='0.5'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: slowRotate 120s linear infinite;
+        }
+
+        @keyframes slowRotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .contemplation-verse {
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 30px rgba(214, 158, 46, 0.3);
+        }
+
+        .contemplation-timer {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            margin: 2rem auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer-progress {
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--accent-gold);
+            transition: transform 1s linear;
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            color: var(--accent-gold);
+            font-weight: 300;
+        }
+
+        .contemplation-journal {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(214, 158, 46, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            resize: none;
+            min-height: 120px;
+            transition: opacity 0.5s ease;
+        }
+
+        .contemplation-journal::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .contemplation-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .contemplation-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        /* Breathing guide in contemplation */
+        .breath-guide {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 1rem;
+            animation: breathText 12s ease-in-out infinite;
+        }
+
+        @keyframes breathText {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            12.5% {
+                opacity: 1;
+            }
+
+            25% {
+                opacity: 0.3;
+            }
+
+            37.5% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            62.5% {
+                opacity: 1;
+            }
+
+            75% {
+                opacity: 0.3;
+            }
+
+            87.5% {
+                opacity: 1;
+            }
+        }
+
+        /* Contemplation enter button */
+        .enter-contemplation {
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .enter-contemplation:hover {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            box-shadow: 0 0 30px rgba(214, 158, 46, 0.3);
+        }
+
+        /* Duration buttons */
+        .duration-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(214, 158, 46, 0.3);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .duration-btn:hover,
+        .duration-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
         }
     </style>
 </head>
-<body class="bg-[#f5f5f0] text-stone-800 antialiased selection:bg-stone-300 selection:text-stone-900">
+
+<body class="antialiased">
+
+    <!-- Floating Particles Background -->
+    <div class="particles-container" id="particles"></div>
 
     <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 bg-[#f5f5f0]/95 backdrop-blur-sm border-b border-stone-300 shadow-sm">
+    <nav class="sticky top-0 z-50 backdrop-blur-sm border-b shadow-sm"
+        style="background: var(--bg-nav); border-color: var(--border-primary);">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
-                    <span class="serif-header text-xl sm:text-2xl font-bold tracking-tight text-stone-900">The Hermetic Codex</span>
+                    <span class="serif-header text-xl sm:text-2xl font-bold tracking-tight text-themed">The Hermetic
+                        Codex</span>
                 </div>
-                <div class="hidden md:flex space-x-6 lg:space-x-8">
-                    <button onclick="navTo('principles')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">The 7 Principles</button>
-                    <button onclick="navTo('methodology')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">Methodology</button>
-                    <button onclick="navTo('source')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">Emerald Tablet</button>
-                    <button onclick="navTo('reflection')" class="text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium transition-colors">Self-Mastery</button>
+                <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <button onclick="navTo('principles')"
+                        class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">The
+                        7 Principles</button>
+                    <button onclick="navTo('methodology')"
+                        class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Methodology</button>
+                    <button onclick="navTo('source')"
+                        class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Emerald
+                        Tablet</button>
+                    <button onclick="navTo('reflection')"
+                        class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Self-Mastery</button>
+
+                    <!-- Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" class="theme-toggle touch-target" aria-label="Toggle dark mode"
+                        title="Toggle dark mode">
+                        <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20"
+                            style="color: var(--accent-gold);">
+                            <path fill-rule="evenodd"
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <svg class="moon-icon" fill="currentColor" viewBox="0 0 20 20"
+                            style="color: var(--accent-gold);">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                        </svg>
+                    </button>
                 </div>
                 <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button onclick="toggleMobileMenu()" class="hamburger touch-target" id="hamburger" aria-label="Toggle menu">
+                <div class="md:hidden flex items-center gap-3">
+                    <!-- Mobile Dark Mode Toggle -->
+                    <button onclick="toggleDarkMode()" class="theme-toggle touch-target" aria-label="Toggle dark mode"
+                        title="Toggle dark mode">
+                        <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20"
+                            style="color: var(--accent-gold);">
+                            <path fill-rule="evenodd"
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <svg class="moon-icon" fill="currentColor" viewBox="0 0 20 20"
+                            style="color: var(--accent-gold);">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                        </svg>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="hamburger touch-target" id="hamburger"
+                        aria-label="Toggle menu">
                         <span></span>
                         <span></span>
                         <span></span>
@@ -298,90 +1240,125 @@
             </div>
         </div>
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="md:hidden bg-stone-100 border-t border-stone-200">
+        <div id="mobile-menu" class="md:hidden border-t" style="border-color: var(--border-secondary);">
             <div class="px-4 py-3 space-y-1">
-                <button onclick="navTo('principles')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">The 7 Principles</button>
-                <button onclick="navTo('methodology')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">Methodology & Practice</button>
-                <button onclick="navTo('source')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">The Emerald Tablet</button>
-                <button onclick="navTo('reflection')" class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-stone-700 hover:bg-stone-200 active:bg-stone-300">Self-Mastery</button>
+                <button onclick="navTo('principles')"
+                    class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">The
+                    7 Principles</button>
+                <button onclick="navTo('methodology')"
+                    class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">Methodology
+                    & Practice</button>
+                <button onclick="navTo('source')"
+                    class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">The
+                    Emerald Tablet</button>
+                <button onclick="navTo('reflection')"
+                    class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">Self-Mastery</button>
             </div>
         </div>
     </nav>
 
     <!-- Main Content Area -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-12 sm:space-y-16">
+    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-12 sm:space-y-16">
 
         <!-- Intro Section -->
-        <section id="intro" class="text-center max-w-3xl mx-auto hero-gradient pt-4 sm:pt-8 pb-8">
-            <h1 class="serif-header text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 mb-4 sm:mb-6 fade-in">As Above, So Below</h1>
-            <p class="text-base sm:text-lg text-stone-700 leading-relaxed mb-6 sm:mb-8 px-2 fade-in" style="animation-delay: 0.1s;">
-                Welcome to the intersection of ancient wisdom and modern logic. You seek a methodology, not just history. 
-                Hermeticism, attributed to <strong>Hermes Trismegistus</strong> (the Greek parallel to the Egyptian <strong>Thoth</strong>), 
-                is not a religion of blind faith, but a philosophy of <strong>Universal Law</strong>.
+        <section id="intro" class="text-center max-w-3xl mx-auto hero-gradient pt-4 sm:pt-8 pb-8 reveal">
+            <h1 class="serif-header text-3xl sm:text-4xl md:text-5xl font-bold text-themed mb-4 sm:mb-6 fade-in">As
+                Above, So Below</h1>
+            <p class="text-base sm:text-lg text-themed-secondary leading-relaxed mb-6 sm:mb-8 px-2 fade-in"
+                style="animation-delay: 0.1s;">
+                Welcome to the intersection of ancient wisdom and modern logic. You seek a methodology, not just
+                history.
+                Hermeticism, attributed to <strong class="text-themed">Hermes Trismegistus</strong> (the Greek parallel
+                to the Egyptian <strong class="text-themed">Thoth</strong>),
+                is not a religion of blind faith, but a philosophy of <strong class="gold-accent">Universal
+                    Law</strong>.
             </p>
-            <div class="h-1 w-20 sm:w-24 bg-gradient-to-r from-stone-300 via-amber-500 to-stone-300 mx-auto rounded-full"></div>
+            <div
+                class="h-1 w-24 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto rounded-full accent-line pulse-glow">
+            </div>
         </section>
 
         <!-- SECTION 1: The 7 Principles -->
-        <section id="principles" class="scroll-mt-20">
+        <section id="principles" class="scroll-mt-20 reveal">
             <div class="mb-6 sm:mb-8">
-                <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-3 sm:mb-4">I. The 7 Hermetic Principles</h2>
-                <p class="text-stone-600 text-sm sm:text-base max-w-4xl">
-                    The Kybalion outlines seven immutable laws. For a logical mind, treat these not as religious dogmas, but as 
-                    <strong>axioms of the system</strong>. Tap any card to explore its logical application.
+                <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-3 sm:mb-4">I. The 7 Hermetic
+                    Principles</h2>
+                <p class="text-themed-muted text-sm sm:text-base max-w-4xl">
+                    The Kybalion outlines seven immutable laws. For a logical mind, treat these not as religious dogmas,
+                    but as
+                    <strong class="text-themed-secondary">axioms of the system</strong>. Tap any card to explore its
+                    logical application.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" id="principles-grid">
                 <!-- Cards injected via JS -->
             </div>
-            
+
             <!-- Principle Detail View -->
-            <div id="principle-detail" class="hidden mt-6 sm:mt-8 bg-white border border-stone-200 rounded-xl shadow-lg p-5 sm:p-6 md:p-8 transition-all">
+            <div id="principle-detail"
+                class="hidden mt-6 sm:mt-8 bg-themed border border-themed rounded-xl shadow-lg p-5 sm:p-6 md:p-8">
                 <div class="flex flex-col gap-4 sm:gap-6">
                     <div class="flex-1">
-                        <h3 id="detail-title" class="serif-header text-xl sm:text-2xl font-bold text-stone-800 mb-2"></h3>
-                        <p id="detail-desc" class="text-stone-600 mb-4 italic text-sm sm:text-base"></p>
-                        <div class="bg-stone-50 p-4 rounded-lg border-l-4 border-amber-500">
-                            <h4 class="font-bold text-xs sm:text-sm text-stone-900 uppercase tracking-wide mb-1">Logical Application</h4>
-                            <p id="detail-app" class="text-stone-700 text-sm sm:text-base"></p>
+                        <h3 id="detail-title" class="serif-header text-xl sm:text-2xl font-bold text-themed mb-2">
+                        </h3>
+                        <p id="detail-desc" class="text-themed-muted mb-4 italic text-sm sm:text-base"></p>
+                        <div class="bg-themed-tertiary p-4 rounded-lg border-l-4"
+                            style="border-left-color: var(--accent-gold);">
+                            <h4 class="font-bold text-xs sm:text-sm text-themed uppercase tracking-wide mb-1">Logical
+                                Application</h4>
+                            <p id="detail-app" class="text-themed-secondary text-sm sm:text-base"></p>
                         </div>
                     </div>
                     <div class="w-full">
-                        <div class="bg-stone-900 text-stone-100 p-4 sm:p-5 rounded-lg shadow-lg">
-                            <h4 class="font-bold text-xs sm:text-sm uppercase tracking-wide mb-2 border-b border-stone-700 pb-2">The Practice</h4>
-                            <p id="detail-practice" class="text-sm leading-relaxed"></p>
+                        <div class="p-4 sm:p-5 rounded-lg shadow-lg"
+                            style="background: var(--bg-card-dark); color: var(--text-primary);">
+                            <h4 class="font-bold text-xs sm:text-sm uppercase tracking-wide mb-2 border-b pb-2"
+                                style="border-color: var(--border-primary); color: var(--accent-gold);">The Practice
+                            </h4>
+                            <p id="detail-practice" class="text-sm leading-relaxed"
+                                style="color: var(--text-secondary);"></p>
                         </div>
                     </div>
                 </div>
-                <button onclick="closePrincipleDetail()" class="mt-4 w-full sm:w-auto px-4 py-2 text-sm font-medium text-stone-600 hover:text-stone-900 transition-colors">
+                <button onclick="closePrincipleDetail()"
+                    class="mt-4 w-full sm:w-auto px-4 py-2 text-sm font-medium text-themed-muted hover:text-themed ripple rounded-lg transition-all">
                     ← Back to Principles
                 </button>
             </div>
         </section>
 
         <!-- SECTION 2: Methodology -->
-        <section id="methodology" class="scroll-mt-20 border-t border-stone-200 pt-12 sm:pt-16">
+        <section id="methodology" class="scroll-mt-20 border-t pt-12 sm:pt-16 reveal"
+            style="border-color: var(--border-secondary);">
             <div class="mb-6 sm:mb-8">
-                <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-3 sm:mb-4">II. The Methodology of Transmutation</h2>
-                <p class="text-stone-600 text-sm sm:text-base max-w-3xl">
-                    Based on the <em>Principle of Polarity</em>, emotions are not fixed entities but degrees on a sliding scale. 
-                    Fear and Courage are the same thing, just at different frequencies. We do not destroy emotions; we <strong>transmute</strong> them.
+                <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-3 sm:mb-4">II. The Methodology
+                    of Transmutation</h2>
+                <p class="text-themed-muted text-sm sm:text-base max-w-3xl">
+                    Based on the <em>Principle of Polarity</em>, emotions are not fixed entities but degrees on a
+                    sliding scale.
+                    Fear and Courage are the same thing, just at different frequencies. We do not destroy emotions; we
+                    <strong class="gold-accent">transmute</strong> them.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Interactive Transmutation Tool -->
-                <div class="bg-white p-5 sm:p-6 rounded-xl border border-stone-200 shadow-sm order-2 lg:order-1">
-                    <h3 class="serif-header text-lg sm:text-xl font-bold text-stone-800 mb-3 sm:mb-4">Interactive Polarity Scale</h3>
-                    <p class="text-xs sm:text-sm text-stone-500 mb-4 sm:mb-6">
-                        Select an emotional axis below. Use the slider to visualize transmutation — raising your vibration.
+                <div class="bg-themed p-5 sm:p-6 rounded-xl border border-themed shadow-sm order-2 lg:order-1">
+                    <h3 class="serif-header text-lg sm:text-xl font-bold text-themed mb-3 sm:mb-4">Interactive
+                        Polarity Scale</h3>
+                    <p class="text-xs sm:text-sm text-themed-muted mb-4 sm:mb-6">
+                        Select an emotional axis below. Use the slider to visualize transmutation — raising your
+                        vibration.
                     </p>
-                    
+
                     <div class="polarity-buttons mb-6">
-                        <button onclick="setPolarity('fear')" id="btn-fear" class="polarity-btn active">Fear ↔ Courage</button>
-                        <button onclick="setPolarity('grief')" id="btn-grief" class="polarity-btn">Grief ↔ Peace</button>
-                        <button onclick="setPolarity('lethargy')" id="btn-lethargy" class="polarity-btn">Lethargy ↔ Passion</button>
+                        <button onclick="setPolarity('fear')" id="btn-fear" class="polarity-btn active ripple">Fear ↔
+                            Courage</button>
+                        <button onclick="setPolarity('grief')" id="btn-grief" class="polarity-btn ripple">Grief ↔
+                            Peace</button>
+                        <button onclick="setPolarity('lethargy')" id="btn-lethargy" class="polarity-btn ripple">Lethargy
+                            ↔ Passion</button>
                     </div>
 
                     <div class="chart-container">
@@ -389,9 +1366,10 @@
                     </div>
 
                     <div class="mt-6">
-                        <label class="block text-sm font-medium text-stone-700 mb-3">Apply Willpower (Vibration)</label>
+                        <label class="block text-sm font-medium text-themed-secondary mb-3">Apply Willpower
+                            (Vibration)</label>
                         <input type="range" id="vibrationSlider" min="0" max="100" value="20" class="w-full">
-                        <div class="flex justify-between text-xs text-stone-500 mt-2">
+                        <div class="flex justify-between text-xs text-themed-muted mt-2">
                             <span>Lead (Passive)</span>
                             <span>Gold (Active)</span>
                         </div>
@@ -400,33 +1378,36 @@
 
                 <!-- The Practical List -->
                 <div class="space-y-4 sm:space-y-6 order-1 lg:order-2">
-                    <div class="bg-stone-50 p-4 sm:p-6 rounded-xl border border-stone-200">
-                        <h4 class="font-bold text-stone-900 mb-2 text-sm sm:text-base">Meditation & Mindfulness</h4>
-                        <p class="text-xs sm:text-sm text-stone-700 mb-2">
+                    <div class="bg-themed-tertiary p-4 sm:p-6 rounded-xl border border-themed reveal reveal-delay-1">
+                        <h4 class="font-bold text-themed mb-2 text-sm sm:text-base">Meditation & Mindfulness</h4>
+                        <p class="text-xs sm:text-sm text-themed-secondary mb-2">
                             <strong>Principle:</strong> Mentalism ("The All is Mind").
                         </p>
-                        <p class="text-xs sm:text-sm text-stone-600">
-                            <em>Practice:</em> 10 minutes daily observing thoughts as external objects. Do not judge; just observe.
+                        <p class="text-xs sm:text-sm text-themed-muted">
+                            <em>Practice:</em> 10 minutes daily observing thoughts as external objects. Do not judge;
+                            just observe.
                         </p>
                     </div>
 
-                    <div class="bg-stone-50 p-4 sm:p-6 rounded-xl border border-stone-200">
-                        <h4 class="font-bold text-stone-900 mb-2 text-sm sm:text-base">Passion & Restraint</h4>
-                        <p class="text-xs sm:text-sm text-stone-700 mb-2">
+                    <div class="bg-themed-tertiary p-4 sm:p-6 rounded-xl border border-themed reveal reveal-delay-2">
+                        <h4 class="font-bold text-themed mb-2 text-sm sm:text-base">Passion & Restraint</h4>
+                        <p class="text-xs sm:text-sm text-themed-secondary mb-2">
                             <strong>Principle:</strong> Rhythm (The Pendulum Swing).
                         </p>
-                        <p class="text-xs sm:text-sm text-stone-600">
-                            <em>Practice:</em> "Neutralization". When you feel extreme joy, stay grounded. Maintain the "Upper Path" of stability.
+                        <p class="text-xs sm:text-sm text-themed-muted">
+                            <em>Practice:</em> "Neutralization". When you feel extreme joy, stay grounded. Maintain the
+                            "Upper Path" of stability.
                         </p>
                     </div>
 
-                    <div class="bg-stone-50 p-4 sm:p-6 rounded-xl border border-stone-200">
-                        <h4 class="font-bold text-stone-900 mb-2 text-sm sm:text-base">Prayer & Hope</h4>
-                        <p class="text-xs sm:text-sm text-stone-700 mb-2">
+                    <div class="bg-themed-tertiary p-4 sm:p-6 rounded-xl border border-themed reveal reveal-delay-3">
+                        <h4 class="font-bold text-themed mb-2 text-sm sm:text-base">Prayer & Hope</h4>
+                        <p class="text-xs sm:text-sm text-themed-secondary mb-2">
                             <strong>Principle:</strong> Cause and Effect.
                         </p>
-                        <p class="text-xs sm:text-sm text-stone-600">
-                            <em>Practice:</em> Replace "Hope" with "Alignment". Speak intent as if it has occurred. "I am peaceful" sets a vibration.
+                        <p class="text-xs sm:text-sm text-themed-muted">
+                            <em>Practice:</em> Replace "Hope" with "Alignment". Speak intent as if it has occurred. "I
+                            am peaceful" sets a vibration.
                         </p>
                     </div>
                 </div>
@@ -434,11 +1415,13 @@
         </section>
 
         <!-- SECTION 3: The Emerald Tablet -->
-        <section id="source" class="scroll-mt-20 border-t border-stone-200 pt-12 sm:pt-16">
-            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-4 sm:mb-6">III. The Emerald Tablet</h2>
-            <p class="text-stone-600 text-sm sm:text-base mb-6 sm:mb-8 max-w-3xl">
-                Attributed to Hermes Trismegistus — the cryptic source of alchemical wisdom. 
-                Tap on the cryptic text to reveal the <strong>Logical Interpretation</strong>.
+        <section id="source" class="scroll-mt-20 border-t pt-12 sm:pt-16 reveal"
+            style="border-color: var(--border-secondary);">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-4 sm:mb-6">III. The Emerald Tablet
+            </h2>
+            <p class="text-themed-muted text-sm sm:text-base mb-6 sm:mb-8 max-w-3xl">
+                Attributed to Hermes Trismegistus — the cryptic source of alchemical wisdom.
+                Tap on the cryptic text to reveal the <strong class="gold-accent">Logical Interpretation</strong>.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="tablet-grid">
@@ -447,45 +1430,55 @@
         </section>
 
         <!-- SECTION 4: Self-Reflection -->
-        <section id="reflection" class="scroll-mt-20 border-t border-stone-200 pt-12 sm:pt-16 pb-12 sm:pb-20">
-            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-stone-900 mb-4 sm:mb-6">IV. The Alchemist's Balance</h2>
+        <section id="reflection" class="scroll-mt-20 border-t pt-12 sm:pt-16 pb-12 sm:pb-20 reveal"
+            style="border-color: var(--border-secondary);">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-4 sm:mb-6">IV. The Alchemist's Balance
+            </h2>
             <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
                 <div class="w-full lg:w-1/2">
-                    <p class="text-stone-600 text-sm sm:text-base mb-6">
-                        Progress in Hermeticism requires balance. A purely logical mind without action is stagnant. 
-                        Use this chart to visualize your current "Alchemical Configuration".
+                    <p class="text-themed-muted text-sm sm:text-base mb-6">
+                        Progress in Hermeticism requires balance. A purely logical mind without action is stagnant.
+                        Use this chart to visualize your current <strong class="gold-accent">"Alchemical
+                            Configuration"</strong>.
                     </p>
-                    
-                    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-stone-200">
-                        <h4 class="font-bold text-stone-800 mb-4 text-sm sm:text-base">Self-Assessment Quick-Check:</h4>
+
+                    <div class="bg-themed p-4 sm:p-6 rounded-xl shadow-sm border border-themed">
+                        <h4 class="font-bold text-themed mb-4 text-sm sm:text-base">Self-Assessment Quick-Check:</h4>
                         <div class="space-y-1">
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Logic / Study (Mentalism)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(0, this.value)" min="1" max="10" value="8">
+                                <span class="text-sm text-themed-secondary">Logic / Study (Mentalism)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(0, this.value)" min="1"
+                                    max="10" value="8">
                             </div>
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Adaptability (Correspondence)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(1, this.value)" min="1" max="10" value="6">
+                                <span class="text-sm text-themed-secondary">Adaptability (Correspondence)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(1, this.value)" min="1"
+                                    max="10" value="6">
                             </div>
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Energy / Health (Vibration)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(2, this.value)" min="1" max="10" value="5">
+                                <span class="text-sm text-themed-secondary">Energy / Health (Vibration)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(2, this.value)" min="1"
+                                    max="10" value="5">
                             </div>
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Emotional Control (Polarity)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(3, this.value)" min="1" max="10" value="4">
+                                <span class="text-sm text-themed-secondary">Emotional Control (Polarity)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(3, this.value)" min="1"
+                                    max="10" value="4">
                             </div>
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Consistency (Rhythm)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(4, this.value)" min="1" max="10" value="5">
+                                <span class="text-sm text-themed-secondary">Consistency (Rhythm)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(4, this.value)" min="1"
+                                    max="10" value="5">
                             </div>
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Action / Discipline (Cause & Effect)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(5, this.value)" min="1" max="10" value="7">
+                                <span class="text-sm text-themed-secondary">Action / Discipline (Cause & Effect)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(5, this.value)" min="1"
+                                    max="10" value="7">
                             </div>
                             <div class="assessment-item">
-                                <span class="text-sm text-stone-700">Creativity / Balance (Gender)</span>
-                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(6, this.value)" min="1" max="10" value="6">
+                                <span class="text-sm text-themed-secondary">Creativity / Balance (Gender)</span>
+                                <input type="range" class="w-full sm:w-40" onchange="updateRadar(6, this.value)" min="1"
+                                    max="10" value="6">
                             </div>
                         </div>
                     </div>
@@ -499,13 +1492,214 @@
             </div>
         </section>
 
+        <!-- SECTION 5: Daily Alignment Ritual -->
+        <section id="ritual" class="scroll-mt-20 border-t pt-12 sm:pt-16 reveal"
+            style="border-color: var(--border-secondary);">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-4 sm:mb-6">V. Daily Alignment Ritual
+            </h2>
+            <p class="text-themed-muted text-sm sm:text-base mb-6 sm:mb-8 max-w-3xl">
+                Each day carries unique energy from its <strong class="gold-accent">planetary ruler</strong>.
+                The Gnostics taught that we ascend through the seven spheres; each day offers a gate.
+                Align your morning practice with the celestial current.
+            </p>
+
+            <div class="ritual-card rounded-xl p-6 sm:p-8 relative z-10" id="ritual-container">
+                <!-- Content injected by JS based on current day -->
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <!-- Left: Day & Planet Info -->
+                    <div class="flex-1 text-center lg:text-left">
+                        <div class="flex items-center justify-center lg:justify-start gap-4 mb-4">
+                            <span class="planetary-symbol" id="ritual-planet-symbol">☉</span>
+                            <div>
+                                <p class="text-themed-muted text-xs uppercase tracking-widest">Today's Ruler</p>
+                                <h3 class="serif-header text-2xl font-bold text-themed" id="ritual-day-title">Sunday —
+                                    Sol</h3>
+                            </div>
+                        </div>
+                        <p class="text-themed-secondary text-sm mb-4" id="ritual-day-description">
+                            The Sun governs identity, will, and self-expression. A day for centering the Self.
+                        </p>
+                        <div class="flex items-center justify-center lg:justify-start gap-3 mb-4">
+                            <span class="moon-phase-icon" id="ritual-moon-icon">🌓</span>
+                            <div>
+                                <p class="text-xs text-themed-muted uppercase tracking-wide">Moon Phase</p>
+                                <p class="text-sm text-themed-secondary" id="ritual-moon-phase">First Quarter — Building
+                                    Energy</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-lg bg-themed-tertiary border border-themed">
+                            <p class="text-xs text-themed-muted uppercase tracking-wide mb-2">Principle of Focus</p>
+                            <p class="serif-header text-lg font-bold gold-accent" id="ritual-principle">Mentalism</p>
+                            <p class="text-sm text-themed-muted mt-1" id="ritual-principle-hint">
+                                The All is Mind. Today, observe your thoughts as the source of your reality.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Breathwork & Affirmation -->
+                    <div class="flex-1 text-center">
+                        <p class="text-xs text-themed-muted uppercase tracking-widest mb-4">Morning Breathwork</p>
+                        <div class="breath-circle mb-4">
+                            <div class="breath-inner"></div>
+                        </div>
+                        <p class="text-xs text-themed-muted mb-6">
+                            Inhale 4s • Hold 4s • Exhale 4s • Hold 4s<br>
+                            <span class="text-themed-secondary">Repeat 7 times (one for each sphere)</span>
+                        </p>
+
+                        <div class="p-4 rounded-lg" style="background: var(--bg-card-dark);">
+                            <p class="text-xs uppercase tracking-widest mb-2" style="color: var(--accent-gold);">Morning
+                                Invocation</p>
+                            <p class="serif-header text-base sm:text-lg italic" style="color: var(--text-secondary);"
+                                id="ritual-affirmation">
+                                "I am the observer of my mind. My thoughts shape reality. I choose alignment."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: The Oracle Spread -->
+        <section id="oracle" class="scroll-mt-20 border-t pt-12 sm:pt-16 reveal"
+            style="border-color: var(--border-secondary);">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-4 sm:mb-6">VI. The Oracle Spread</h2>
+            <p class="text-themed-muted text-sm sm:text-base mb-6 sm:mb-8 max-w-3xl">
+                Draw three principles that <strong class="gold-accent">correspond</strong> to your current moment.
+                The Hermetic triad: <em>Thesis</em> (what was), <em>Antithesis</em> (what is), <em>Synthesis</em> (what
+                can be).
+                Nothing is random — what appears speaks to your current vibration.
+            </p>
+
+            <div class="text-center mb-8">
+                <button onclick="drawOracleSpread()" class="polarity-btn active ripple" id="oracle-draw-btn">
+                    ✦ Draw Your Spread ✦
+                </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-8 oracle-container"
+                id="oracle-cards">
+                <!-- Card 1: Past/Thesis -->
+                <div class="oracle-card" id="oracle-card-0" onclick="flipOracleCard(0)">
+                    <div class="oracle-card-face oracle-card-back"></div>
+                    <div class="oracle-card-face oracle-card-front">
+                        <span class="oracle-position-label">What Was</span>
+                        <span class="oracle-principle-num" id="oracle-num-0">I</span>
+                        <span class="oracle-principle-title" id="oracle-title-0">Mentalism</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Present/Antithesis -->
+                <div class="oracle-card" id="oracle-card-1" onclick="flipOracleCard(1)">
+                    <div class="oracle-card-face oracle-card-back"></div>
+                    <div class="oracle-card-face oracle-card-front">
+                        <span class="oracle-position-label">What Is</span>
+                        <span class="oracle-principle-num" id="oracle-num-1">IV</span>
+                        <span class="oracle-principle-title" id="oracle-title-1">Polarity</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Future/Synthesis -->
+                <div class="oracle-card" id="oracle-card-2" onclick="flipOracleCard(2)">
+                    <div class="oracle-card-face oracle-card-back"></div>
+                    <div class="oracle-card-face oracle-card-front">
+                        <span class="oracle-position-label">What Can Be</span>
+                        <span class="oracle-principle-num" id="oracle-num-2">VII</span>
+                        <span class="oracle-principle-title" id="oracle-title-2">Gender</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oracle Synthesis Message -->
+            <div id="oracle-synthesis" class="hidden mt-8 max-w-2xl mx-auto text-center p-6 rounded-xl"
+                style="background: var(--bg-card-dark);">
+                <p class="text-xs uppercase tracking-widest mb-3" style="color: var(--accent-gold);">The Synthesis</p>
+                <p class="serif-header text-lg sm:text-xl italic" style="color: var(--text-secondary);"
+                    id="oracle-synthesis-text">
+                    <!-- Synthesis message injected by JS -->
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 7: Emerald Contemplation -->
+        <section id="contemplate" class="scroll-mt-20 border-t pt-12 sm:pt-16 pb-12 sm:pb-20 reveal"
+            style="border-color: var(--border-secondary);">
+            <h2 class="serif-header text-2xl sm:text-3xl font-bold text-themed mb-4 sm:mb-6">VII. Emerald Contemplation
+            </h2>
+            <p class="text-themed-muted text-sm sm:text-base mb-6 sm:mb-8 max-w-3xl">
+                Enter a state of <strong class="gold-accent">henosis</strong> — union with the Higher Mind.
+                The Gnostics called this <em>gnosis</em>: direct knowing beyond words.
+                Select a verse from the Emerald Tablet. Breathe. Contemplate. Let understanding arise.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                <select id="contemplation-verse-select"
+                    class="bg-themed border border-themed rounded-lg px-4 py-3 text-themed text-sm w-full sm:w-auto max-w-md">
+                    <option value="0">"Tis true without lying, certain & most true."</option>
+                    <option value="1">"That which is below is like that which is above..."</option>
+                    <option value="2">"And as all things have been & arose from one..."</option>
+                    <option value="3">"The Sun is its father, the moon its mother..."</option>
+                    <option value="4">"Separate thou the earth from the fire..."</option>
+                    <option value="5">"Its force is entire if converted into earth."</option>
+                </select>
+
+                <div class="flex gap-2">
+                    <button class="duration-btn" data-duration="180" onclick="setContemplationDuration(180, this)">3
+                        min</button>
+                    <button class="duration-btn active" data-duration="420"
+                        onclick="setContemplationDuration(420, this)">7 min</button>
+                    <button class="duration-btn" data-duration="720" onclick="setContemplationDuration(720, this)">12
+                        min</button>
+                </div>
+
+                <button onclick="enterContemplation()" class="enter-contemplation">
+                    ◎ Enter Contemplation
+                </button>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="bg-stone-900 text-stone-400 py-8 sm:py-10 border-t border-stone-800">
+    <!-- Contemplation Overlay (Full Screen) -->
+    <div class="contemplation-overlay" id="contemplation-overlay">
+        <div class="sacred-geometry"></div>
+        <button class="contemplation-close" onclick="exitContemplation()">✕</button>
+
+        <div class="contemplation-content">
+            <p class="text-xs uppercase tracking-widest mb-6" style="color: var(--text-muted);">Emerald Contemplation
+            </p>
+
+            <p class="contemplation-verse serif-header" id="contemplation-verse-display">
+                "Tis true without lying, certain & most true."
+            </p>
+
+            <div class="contemplation-timer" id="contemplation-timer">
+                <div class="timer-progress" id="timer-progress"></div>
+                <span class="timer-display" id="timer-display">7:00</span>
+            </div>
+
+            <p class="breath-guide" id="breath-guide">Breathe... Inhale... Hold... Exhale... Hold...</p>
+
+            <textarea class="contemplation-journal" id="contemplation-journal"
+                placeholder="After contemplation, record your insights here... What arose from silence? What did you remember?"></textarea>
+
+            <div class="mt-4">
+                <button onclick="exitContemplation()" class="enter-contemplation">
+                    Complete Session
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="relative z-10 py-8 sm:py-10 border-t"
+        style="background: var(--bg-card-dark); border-color: var(--border-primary);">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <p class="serif-header text-base sm:text-lg text-stone-300 mb-2">"The lips of wisdom are closed, except to the ears of Understanding."</p>
-            <p class="text-xs sm:text-sm opacity-60">- The Kybalion</p>
-            <div class="mt-6 sm:mt-8 text-xs text-stone-600">
+            <p class="serif-header text-base sm:text-lg mb-2" style="color: var(--accent-gold);">"The lips of wisdom are
+                closed, except to the ears of Understanding."</p>
+            <p class="text-xs sm:text-sm text-themed-muted opacity-60">- The Kybalion</p>
+            <div class="mt-6 sm:mt-8 text-xs text-themed-muted opacity-50">
                 A tool for the Rational Mystic. Generated for research and practice.
             </div>
         </div>
@@ -603,13 +1797,96 @@
         const tabletGrid = document.getElementById('tablet-grid');
         const slider = document.getElementById('vibrationSlider');
 
+        // --- DARK MODE ---
+
+        function initDarkMode() {
+            const savedTheme = localStorage.getItem('hermetic-theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('hermetic-theme', isDark ? 'dark' : 'light');
+
+            // Update charts for new theme
+            updateChartTheme();
+        }
+
+        function updateChartTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? '#44403c' : '#e7e5e4';
+            const textColor = isDark ? '#a8a29e' : '#44403c';
+
+            if (radarChartInstance) {
+                radarChartInstance.options.scales.r.angleLines.color = gridColor;
+                radarChartInstance.options.scales.r.grid.color = gridColor;
+                radarChartInstance.options.scales.r.pointLabels.color = textColor;
+                radarChartInstance.update();
+            }
+
+            if (polarityChartInstance) {
+                polarityChartInstance.options.plugins.legend.labels.color = textColor;
+                polarityChartInstance.update();
+            }
+        }
+
+        // --- FLOATING PARTICLES ---
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 15;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+                particle.style.width = `${2 + Math.random() * 4}px`;
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+        }
+
+        // --- SCROLL REVEAL ---
+
+        function initScrollReveal() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
         // --- INITIALIZATION ---
 
         function init() {
+            initDarkMode();
+            createParticles();
             renderPrinciples();
             renderTablet();
             initPolarityChart();
             initRadarChart();
+
+            // Initialize scroll reveal after a brief delay
+            setTimeout(initScrollReveal, 100);
 
             slider.addEventListener('input', (e) => {
                 updatePolarityChart(e.target.value);
@@ -619,27 +1896,30 @@
         // --- RENDER FUNCTIONS ---
 
         function renderPrinciples() {
-            principlesGrid.innerHTML = principlesData.map(p => `
-                <div onclick="showPrincipleDetail(${p.id})" class="principle-card bg-white p-5 sm:p-6 rounded-xl border border-stone-200 cursor-pointer group">
-                    <h3 class="serif-header text-lg sm:text-xl font-bold text-stone-700 group-hover:text-stone-900 mb-2">${p.title}</h3>
-                    <p class="text-xs sm:text-sm text-stone-500 line-clamp-2">${p.desc}</p>
-                    <div class="mt-4 flex items-center text-xs font-bold text-stone-400 uppercase tracking-widest group-hover:text-amber-600">
-                        Explore <span class="ml-1">→</span>
+            principlesGrid.innerHTML = principlesData.map((p, index) => `
+                <div onclick="showPrincipleDetail(${p.id})" class="principle-card p-5 sm:p-6 rounded-xl border cursor-pointer group reveal reveal-delay-${index + 1}">
+                    <h3 class="serif-header text-lg sm:text-xl font-bold text-themed-secondary group-hover:text-themed mb-2">${p.title}</h3>
+                    <p class="text-xs sm:text-sm text-themed-muted line-clamp-2">${p.desc}</p>
+                    <div class="mt-4 flex items-center text-xs font-bold text-themed-muted uppercase tracking-widest group-hover:text-amber-500 transition-colors">
+                        Explore <span class="ml-1 transition-transform group-hover:translate-x-1">→</span>
                     </div>
                 </div>
             `).join('');
+
+            // Re-observe the new elements
+            setTimeout(initScrollReveal, 50);
         }
 
         function showPrincipleDetail(id) {
             const p = principlesData.find(item => item.id === id);
-            
+
             document.getElementById('detail-title').innerText = p.title;
             document.getElementById('detail-desc').innerText = `"${p.desc}"`;
             document.getElementById('detail-app').innerText = p.app;
             document.getElementById('detail-practice').innerText = p.practice;
 
             detailSection.classList.remove('hidden');
-            
+
             setTimeout(() => {
                 detailSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 100);
@@ -651,23 +1931,26 @@
 
         function renderTablet() {
             tabletGrid.innerHTML = tabletData.map((t, index) => `
-                <div onclick="toggleTabletLogic(${index})" class="tablet-card bg-stone-800 p-4 sm:p-5 rounded-xl border border-stone-700 cursor-pointer hover:bg-stone-700 active:bg-stone-750 transition-colors">
-                    <p class="serif-header text-stone-200 text-base sm:text-lg italic mb-2">"${t.verse}"</p>
-                    <div id="tablet-logic-${index}" class="hidden mt-3 pt-3 border-t border-stone-600">
-                        <p class="text-stone-300 text-xs sm:text-sm"><span class="font-bold text-amber-400">Logic:</span> ${t.logic}</p>
+                <div onclick="toggleTabletLogic(${index})" class="tablet-card p-4 sm:p-5 rounded-xl border cursor-pointer transition-all reveal reveal-delay-${index + 1}" style="background: var(--bg-card-dark); border-color: var(--border-primary);">
+                    <p class="serif-header text-base sm:text-lg italic mb-2" style="color: var(--text-secondary);">"${t.verse}"</p>
+                    <div id="tablet-logic-${index}" class="hidden mt-3 pt-3 border-t" style="border-color: var(--border-primary);">
+                        <p class="text-xs sm:text-sm" style="color: var(--text-muted);"><span class="font-bold" style="color: var(--accent-gold);">Logic:</span> ${t.logic}</p>
                     </div>
                     <div class="text-center mt-2">
-                        <span id="tablet-hint-${index}" class="text-xs text-stone-500 uppercase tracking-widest">Tap to Decode</span>
+                        <span id="tablet-hint-${index}" class="text-xs uppercase tracking-widest transition-opacity" style="color: var(--text-light);">Tap to Decode</span>
                     </div>
                 </div>
             `).join('');
+
+            // Re-observe the new elements
+            setTimeout(initScrollReveal, 50);
         }
 
         function toggleTabletLogic(index) {
             const el = document.getElementById(`tablet-logic-${index}`);
             const hint = document.getElementById(`tablet-hint-${index}`);
             const isHidden = el.classList.contains('hidden');
-            
+
             el.classList.toggle('hidden');
             hint.innerText = isHidden ? 'Tap to Hide' : 'Tap to Decode';
         }
@@ -676,7 +1959,9 @@
 
         function initPolarityChart() {
             const ctx = document.getElementById('polarityChart').getContext('2d');
-            
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#a8a29e' : '#44403c';
+
             polarityChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -700,6 +1985,10 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     indexAxis: 'y',
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    },
                     scales: {
                         x: {
                             stacked: true,
@@ -712,17 +2001,18 @@
                         }
                     },
                     plugins: {
-                        legend: { 
+                        legend: {
                             position: 'bottom',
                             labels: {
                                 boxWidth: 12,
                                 padding: 16,
-                                font: { size: 11 }
+                                font: { size: 11 },
+                                color: textColor
                             }
                         },
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     return context.dataset.label + ': ' + context.raw + '%';
                                 }
                             }
@@ -737,18 +2027,18 @@
         function setPolarity(type) {
             const sliderVal = document.getElementById('vibrationSlider');
             sliderVal.value = 20;
-            
-            // Update button states
+
+            // Update button states with animation
             document.querySelectorAll('.polarity-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${type}`).classList.add('active');
-            
-            if(type === 'fear') currentAxis = { neg: 'Fear', pos: 'Courage' };
-            if(type === 'grief') currentAxis = { neg: 'Grief', pos: 'Peace' };
-            if(type === 'lethargy') currentAxis = { neg: 'Lethargy', pos: 'Passion' };
+
+            if (type === 'fear') currentAxis = { neg: 'Fear', pos: 'Courage' };
+            if (type === 'grief') currentAxis = { neg: 'Grief', pos: 'Peace' };
+            if (type === 'lethargy') currentAxis = { neg: 'Lethargy', pos: 'Passion' };
 
             polarityChartInstance.data.datasets[0].label = `${currentAxis.neg} (Lead)`;
             polarityChartInstance.data.datasets[1].label = `${currentAxis.pos} (Gold)`;
-            
+
             updatePolarityChart(20);
         }
 
@@ -758,7 +2048,7 @@
 
             polarityChartInstance.data.datasets[0].data = [negativeVal];
             polarityChartInstance.data.datasets[1].data = [positiveVal];
-            
+
             if (positiveVal > 60) {
                 polarityChartInstance.data.datasets[1].backgroundColor = '#b45309';
             } else {
@@ -770,7 +2060,10 @@
 
         function initRadarChart() {
             const ctx = document.getElementById('radarChart').getContext('2d');
-            
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? '#44403c' : '#e7e5e4';
+            const textColor = isDark ? '#a8a29e' : '#44403c';
+
             radarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
@@ -790,16 +2083,20 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 600,
+                        easing: 'easeOutQuart'
+                    },
                     elements: {
                         line: { borderWidth: 2 }
                     },
                     scales: {
                         r: {
-                            angleLines: { color: '#e7e5e4' },
-                            grid: { color: '#e7e5e4' },
+                            angleLines: { color: gridColor },
+                            grid: { color: gridColor },
                             pointLabels: {
                                 font: { size: 10, family: 'Inter' },
-                                color: '#44403c'
+                                color: textColor
                             },
                             suggestedMin: 0,
                             suggestedMax: 10,
@@ -819,10 +2116,10 @@
         }
 
         // --- NAVIGATION ---
-        
+
         function navTo(sectionId) {
             const el = document.getElementById(sectionId);
-            if(el) {
+            if (el) {
                 el.scrollIntoView({ behavior: 'smooth' });
                 closeMobileMenu();
             }
@@ -831,7 +2128,7 @@
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const hamburger = document.getElementById('hamburger');
-            
+
             menu.classList.toggle('open');
             hamburger.classList.toggle('open');
         }
@@ -839,7 +2136,7 @@
         function closeMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const hamburger = document.getElementById('hamburger');
-            
+
             menu.classList.remove('open');
             hamburger.classList.remove('open');
         }
@@ -847,6 +2144,330 @@
         // Start App
         window.addEventListener('DOMContentLoaded', init);
 
+        // ===== DAILY ALIGNMENT RITUAL =====
+
+        const planetaryData = {
+            0: { // Sunday
+                planet: 'Sol',
+                symbol: '☉',
+                title: 'Sunday — Sol (The Sun)',
+                description: 'The Sun governs identity, will, and self-expression. A day for centering the Self — the divine spark within. In Gnostic terms, this is your connection to the Monad.',
+                principle: 'Mentalism',
+                principleHint: 'The All is Mind. Today, observe your thoughts as the source of reality. You are the thinker behind the thought.',
+                affirmation: '"I AM the observer of my mind. My thoughts shape reality. I align with the Source."',
+                element: 'Fire'
+            },
+            1: { // Monday
+                planet: 'Luna',
+                symbol: '☽',
+                title: 'Monday — Luna (The Moon)',
+                description: 'The Moon governs intuition, emotion, and the unconscious. A day for receptivity. Let wisdom arise from within rather than seeking it without.',
+                principle: 'Correspondence',
+                principleHint: 'As above, so below. Your inner emotional state reflects in your outer world. Harmonize within to harmonize without.',
+                affirmation: '"I am receptive to the wisdom that flows through me. My inner world shapes my outer reality."',
+                element: 'Water'
+            },
+            2: { // Tuesday
+                planet: 'Mars',
+                symbol: '♂',
+                title: 'Tuesday — Mars (Tyr)',
+                description: 'Mars governs will, courage, and action. A day for transmuting fear into directed force. The Hermetic Warrior acts, not reacts.',
+                principle: 'Polarity',
+                principleHint: 'Fear and Courage are the same pole. Today, consciously raise your vibration from hesitation to decisive action.',
+                affirmation: '"I transmute fear into focused will. I act from center, not from reaction."',
+                element: 'Fire'
+            },
+            3: { // Wednesday  
+                planet: 'Mercury',
+                symbol: '☿',
+                title: 'Wednesday — Mercury (Hermes)',
+                description: 'Mercury governs communication, intellect, and the transmission of wisdom. Hermes himself rules this day. A day for study, learning, and teaching.',
+                principle: 'Vibration',
+                principleHint: 'Everything vibrates. Your words carry frequency. Speak truth. Let your communication raise the vibration of all it touches.',
+                affirmation: '"I am a clear channel for wisdom. My words carry the frequency of truth."',
+                element: 'Air'
+            },
+            4: { // Thursday
+                planet: 'Jupiter',
+                symbol: '♃',
+                title: 'Thursday — Jupiter (Thor/Zeus)',
+                description: 'Jupiter governs expansion, abundance, and higher law. A day to align with universal order. The macrocosm supports your growth.',
+                principle: 'Cause & Effect',
+                principleHint: 'Every cause has its effect. Today, plant seeds deliberately. Align your actions with the effects you wish to harvest.',
+                affirmation: '"I am a cause, not an effect. I plant seeds in alignment with universal law."',
+                element: 'Air/Fire'
+            },
+            5: { // Friday
+                planet: 'Venus',
+                symbol: '♀',
+                title: 'Friday — Venus (Freya)',
+                description: 'Venus governs love, beauty, harmony, and union. A day for appreciating the divine in form. The material world is sacred when seen correctly.',
+                principle: 'Gender',
+                principleHint: 'Masculine and Feminine unite in all creation. Today, balance giving and receiving, will and surrender.',
+                affirmation: '"I embrace both poles within me. I create through the union of will and receptivity."',
+                element: 'Water/Earth'
+            },
+            6: { // Saturday
+                planet: 'Saturn',
+                symbol: '♄',
+                title: 'Saturday — Saturn (Chronos)',
+                description: 'Saturn governs time, discipline, structure, and the boundaries of form. The final sphere before the stars. A day for reflection on what is essential.',
+                principle: 'Rhythm',
+                principleHint: 'All things have their tides. Saturn knows the value of the low swing. Rest is not failure — it is the gathering before the leap.',
+                affirmation: '"I honor the rhythm of expansion and contraction. In stillness, I gather power."',
+                element: 'Earth'
+            }
+        };
+
+        function getMoonPhase() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+
+            // Simplified moon phase calculation (based on lunar cycle ~29.5 days)
+            const totalDays = (year - 2000) * 365.25 + (month - 1) * 30.6 + day;
+            const lunarCycle = 29.53;
+            const phase = ((totalDays % lunarCycle) / lunarCycle) * 8;
+
+            const phases = [
+                { icon: '🌑', name: 'New Moon — Planting Seeds', energy: 'Beginnings, intentions, the void before creation' },
+                { icon: '🌒', name: 'Waxing Crescent — Emerging', energy: 'First stirrings, hope, building momentum' },
+                { icon: '🌓', name: 'First Quarter — Building', energy: 'Challenges, action required, overcoming' },
+                { icon: '🌔', name: 'Waxing Gibbous — Refining', energy: 'Adjusting, patience, almost there' },
+                { icon: '🌕', name: 'Full Moon — Illumination', energy: 'Peak power, manifestation, clarity' },
+                { icon: '🌖', name: 'Waning Gibbous — Gratitude', energy: 'Receiving, sharing, abundance' },
+                { icon: '🌗', name: 'Last Quarter — Releasing', energy: 'Letting go, forgiveness, clearing' },
+                { icon: '🌘', name: 'Waning Crescent — Surrender', energy: 'Rest, introspection, preparing for renewal' }
+            ];
+
+            return phases[Math.floor(phase)];
+        }
+
+        function updateDailyRitual() {
+            const dayOfWeek = new Date().getDay();
+            const data = planetaryData[dayOfWeek];
+            const moon = getMoonPhase();
+
+            document.getElementById('ritual-planet-symbol').textContent = data.symbol;
+            document.getElementById('ritual-day-title').textContent = data.title;
+            document.getElementById('ritual-day-description').textContent = data.description;
+            document.getElementById('ritual-moon-icon').textContent = moon.icon;
+            document.getElementById('ritual-moon-phase').textContent = moon.name;
+            document.getElementById('ritual-principle').textContent = data.principle;
+            document.getElementById('ritual-principle-hint').textContent = data.principleHint;
+            document.getElementById('ritual-affirmation').textContent = data.affirmation;
+        }
+
+        // ===== ORACLE SPREAD =====
+
+        const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+        const principleNames = ['Mentalism', 'Correspondence', 'Vibration', 'Polarity', 'Rhythm', 'Cause & Effect', 'Gender'];
+
+        let oracleDrawn = [null, null, null];
+        let cardsFlipped = [false, false, false];
+
+        // Synthesis messages based on principle combinations
+        const synthesesData = {
+            // Format: "principle1-principle2-principle3" : "synthesis message"
+            // Some key combinations with meaningful insights
+            default: [
+                "The three principles you've drawn form a unique constellation for this moment. Contemplate how they weave together in your current circumstances.",
+                "These principles speak to the Unity beneath apparent diversity. What pattern do you see emerging?",
+                "The Oracle reveals what your higher Self already knows. Let the synthesis arise from your own contemplation.",
+                "In the Hermetic view, all principles ultimately express The One. How do these three reflect aspects of your wholeness?",
+                "What was, what is, and what can be — all exist Now in the eternal present. These principles are not separate from you."
+            ]
+        };
+
+        function generateSynthesis(p1, p2, p3) {
+            // Some specific meaningful combinations
+            const combos = {
+                '0-3-6': 'Mind perceives duality, which gives birth to creation. You are learning to think past polarities into the creative unity beyond.',
+                '1-4-5': 'As above, so below — through rhythmic cycles, cause becomes effect. You are seeing how patterns repeat across scales of time.',
+                '2-3-4': 'Vibration modulates between poles in rhythmic waves. You are being called to ride the wave rather than fight the current.',
+                '0-1-2': 'All is Mind, reflected in correspondence, expressed as vibration. You are awakening to the mental nature of your experience.',
+                '4-5-6': 'Rhythm, Causation, and Gender — the principles of manifestation. You are in a creative cycle. What are you bringing into form?',
+                '0-5-6': 'Mind as cause, expressed through the union of polarities. You are being shown your creative power and responsibility.',
+                '1-2-3': 'Correspondence through vibration along the poles. You are tuning your inner frequency to reshape your outer world.',
+                '3-4-5': 'Polarity swings in rhythm, creating effects. You are learning to neutralize emotional extremes through understanding.',
+            };
+
+            const key = `${p1}-${p2}-${p3}`;
+            if (combos[key]) return combos[key];
+
+            // Generate a meaningful synthesis based on principles
+            const meanings = {
+                0: 'the mental origin of reality',
+                1: 'the reflection between inner and outer worlds',
+                2: 'the vibrational nature of all things',
+                3: 'the dance of opposites',
+                4: 'the rhythmic flow of existence',
+                5: 'the law of sowing and reaping',
+                6: 'the creative union of polarities'
+            };
+
+            return `Your spread reveals ${meanings[p1]}, moving through ${meanings[p2]}, toward ${meanings[p3]}. This is your current arc of becoming.`;
+        }
+
+        function drawOracleSpread() {
+            // Reset cards
+            cardsFlipped = [false, false, false];
+            document.querySelectorAll('.oracle-card').forEach(card => card.classList.remove('flipped'));
+            document.getElementById('oracle-synthesis').classList.add('hidden');
+
+            // Draw 3 unique principles
+            const available = [0, 1, 2, 3, 4, 5, 6];
+            oracleDrawn = [];
+
+            for (let i = 0; i < 3; i++) {
+                const randomIndex = Math.floor(Math.random() * available.length);
+                oracleDrawn.push(available[randomIndex]);
+                available.splice(randomIndex, 1);
+            }
+
+            // Update card content
+            oracleDrawn.forEach((principleIndex, cardIndex) => {
+                document.getElementById(`oracle-num-${cardIndex}`).textContent = romanNumerals[principleIndex];
+                document.getElementById(`oracle-title-${cardIndex}`).textContent = principleNames[principleIndex];
+            });
+
+            // Change button text
+            document.getElementById('oracle-draw-btn').textContent = '✦ Tap Cards to Reveal ✦';
+        }
+
+        function flipOracleCard(cardIndex) {
+            if (cardsFlipped[cardIndex]) return;
+
+            const card = document.getElementById(`oracle-card-${cardIndex}`);
+            card.classList.add('flipped');
+            cardsFlipped[cardIndex] = true;
+
+            // Check if all cards are flipped
+            if (cardsFlipped.every(f => f)) {
+                showOracleSynthesis();
+            }
+        }
+
+        function showOracleSynthesis() {
+            const synthesisEl = document.getElementById('oracle-synthesis');
+            const synthesisText = document.getElementById('oracle-synthesis-text');
+
+            synthesisText.textContent = generateSynthesis(oracleDrawn[0], oracleDrawn[1], oracleDrawn[2]);
+
+            synthesisEl.classList.remove('hidden');
+            synthesisEl.classList.add('oracle-synthesis');
+
+            // Update button
+            document.getElementById('oracle-draw-btn').textContent = '✦ Draw New Spread ✦';
+
+            // Scroll to synthesis
+            setTimeout(() => {
+                synthesisEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // ===== EMERALD CONTEMPLATION =====
+
+        let contemplationDuration = 420; // 7 minutes default
+        let contemplationTimer = null;
+        let contemplationRemaining = 0;
+
+        const fullVerses = [
+            '"Tis true without lying, certain and most true: That which is below is like that which is above, and that which is above is like that which is below, to accomplish the miracle of the One Thing."',
+            '"That which is below is like that which is above, and that which is above is like that which is below, to accomplish the miracles of the One Thing."',
+            '"And as all things have been and arose from One by the mediation of One, so all things have their birth from this One Thing by adaptation."',
+            '"The Sun is its father, the Moon its mother, the Wind hath carried it in its belly, the Earth is its nurse."',
+            '"Separate thou the Earth from the Fire, the subtle from the gross, sweetly with great industry."',
+            '"Its force or power is entire if it be converted into Earth."'
+        ];
+
+        function setContemplationDuration(seconds, btn) {
+            contemplationDuration = seconds;
+            document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function enterContemplation() {
+            const verseIndex = document.getElementById('contemplation-verse-select').value;
+            document.getElementById('contemplation-verse-display').textContent = fullVerses[verseIndex];
+
+            contemplationRemaining = contemplationDuration;
+            updateTimerDisplay();
+
+            document.getElementById('contemplation-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Start timer
+            contemplationTimer = setInterval(() => {
+                contemplationRemaining--;
+                updateTimerDisplay();
+
+                if (contemplationRemaining <= 0) {
+                    clearInterval(contemplationTimer);
+                    // Pulse the complete button
+                    document.querySelector('.contemplation-content button').style.boxShadow = '0 0 30px rgba(214, 158, 46, 0.5)';
+                }
+            }, 1000);
+
+            // Update progress ring rotation
+            updateTimerProgress();
+        }
+
+        function exitContemplation() {
+            if (contemplationTimer) {
+                clearInterval(contemplationTimer);
+            }
+
+            document.getElementById('contemplation-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Save journal entry to localStorage if content exists
+            const journal = document.getElementById('contemplation-journal');
+            if (journal.value.trim()) {
+                const entries = JSON.parse(localStorage.getItem('hermetic-journal') || '[]');
+                entries.push({
+                    date: new Date().toISOString(),
+                    verse: document.getElementById('contemplation-verse-display').textContent,
+                    insight: journal.value.trim()
+                });
+                localStorage.setItem('hermetic-journal', JSON.stringify(entries));
+                journal.value = '';
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(contemplationRemaining / 60);
+            const seconds = contemplationRemaining % 60;
+            document.getElementById('timer-display').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerProgress() {
+            const progress = document.getElementById('timer-progress');
+            const totalRotation = 360;
+
+            const update = () => {
+                if (contemplationRemaining <= 0) return;
+
+                const elapsed = contemplationDuration - contemplationRemaining;
+                const rotation = (elapsed / contemplationDuration) * totalRotation;
+                progress.style.transform = `rotate(${rotation}deg)`;
+
+                requestAnimationFrame(update);
+            };
+
+            update();
+        }
+
+        // Update init to include new features
+        const originalInit = init;
+        init = function () {
+            originalInit();
+            updateDailyRitual();
+        };
+
     </script>
 </body>
+
 </html>
