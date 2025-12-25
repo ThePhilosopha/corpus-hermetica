@@ -209,6 +209,54 @@
             transform: scale(0.98);
         }
 
+        /* ===== CATEGORY FILTER BUTTONS ===== */
+        .category-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-secondary);
+            color: var(--text-secondary);
+            box-shadow:
+                3px 3px 6px rgba(0, 0, 0, 0.1),
+                -3px -3px 6px rgba(255, 255, 255, 0.7);
+        }
+
+        .dark .category-btn {
+            box-shadow:
+                3px 3px 6px rgba(0, 0, 0, 0.3),
+                -3px -3px 6px rgba(255, 255, 255, 0.05);
+        }
+
+        .category-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #d69e2e, #b45309);
+            color: white;
+            border-color: transparent;
+            box-shadow:
+                inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+                0 4px 12px rgba(214, 158, 46, 0.3);
+        }
+
+        /* ===== LIBRARY CARD STYLES ===== */
+        .library-card {
+            background: var(--bg-secondary);
+        }
+
+        .library-card:hover {
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+            border-color: var(--accent-gold);
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         /* ===== SCROLL REVEAL ANIMATIONS ===== */
         @keyframes slideUp {
             from {
@@ -370,6 +418,7 @@
         /* Range input styling for mobile - with theming */
         input[type="range"] {
             -webkit-appearance: none;
+            appearance: none;
             background: transparent;
             width: 100%;
         }
@@ -609,6 +658,262 @@
 
         .pulse-glow {
             animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* ===== FLOATING H LOGO ===== */
+        .hermetic-logo {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 12px;
+            border: 2px solid var(--accent-gold);
+            box-shadow:
+                0 0 20px rgba(214, 158, 46, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: logoFloat 3s ease-in-out infinite, logoGlow 2s ease-in-out infinite alternate;
+            cursor: pointer;
+            transition: transform var(--transition-bounce), box-shadow var(--transition-base);
+        }
+
+        .hermetic-logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow:
+                0 0 30px rgba(214, 158, 46, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .hermetic-logo::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent-gold), transparent, var(--accent-gold));
+            z-index: -1;
+            opacity: 0.5;
+            animation: logoBorderRotate 4s linear infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes logoGlow {
+            0% {
+                box-shadow: 0 0 15px rgba(214, 158, 46, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+
+            100% {
+                box-shadow: 0 0 25px rgba(214, 158, 46, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        @keyframes logoBorderRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== ALCHEMY DIAL ===== */
+        .alchemy-dial-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .alchemy-dial {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary));
+            box-shadow:
+                8px 8px 20px rgba(0, 0, 0, 0.2),
+                -8px -8px 20px rgba(255, 255, 255, 0.05),
+                inset 0 0 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--border-primary);
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .alchemy-dial:active {
+            cursor: grabbing;
+        }
+
+        .alchemy-dial::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            background: conic-gradient(from 180deg,
+                    #44403c 0deg,
+                    #78716c 90deg,
+                    #d69e2e 180deg,
+                    #f6e05e 270deg,
+                    #d69e2e 360deg);
+            opacity: 0.2;
+        }
+
+        .dial-markers {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+        }
+
+        .dial-marker {
+            position: absolute;
+            width: 2px;
+            height: 12px;
+            background: var(--text-muted);
+            left: 50%;
+            top: 8px;
+            transform-origin: 50% 102px;
+        }
+
+        .dial-marker.major {
+            height: 18px;
+            width: 3px;
+            background: var(--accent-gold);
+        }
+
+        .dial-knob {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            margin: -30px 0 0 -30px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--bg-secondary), var(--bg-primary));
+            box-shadow:
+                4px 4px 10px rgba(0, 0, 0, 0.3),
+                -2px -2px 8px rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dial-knob::after {
+            content: '☿';
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .dial-pointer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 70px;
+            background: linear-gradient(to top, var(--accent-gold), var(--accent-gold-bright));
+            transform-origin: 50% 100%;
+            margin-left: -2px;
+            margin-top: -70px;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(214, 158, 46, 0.5);
+            transition: transform 0.1s ease-out;
+        }
+
+        .dial-pointer::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -6px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 12px solid var(--accent-gold-bright);
+        }
+
+        .dial-labels {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .dial-label {
+            position: absolute;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .dial-label.negative {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+        }
+
+        .dial-label.positive {
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent-gold);
+        }
+
+        .dial-value-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dial-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--text-muted), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .dial-value.transmuted {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-bright));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .dial-state-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .dial-state-label.transmuted {
+            color: var(--accent-gold);
+        }
+
+        .transmutation-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            font-style: italic;
         }
 
         /* Subtle fade-in animation - enhanced */
@@ -1170,6 +1475,74 @@
             border-color: var(--accent-gold);
             color: var(--accent-gold);
         }
+
+        /* Custom Utility Classes for Library */
+        .text-accent-gold {
+            color: var(--accent-gold);
+        }
+
+        .text-themed {
+            color: var(--text-primary);
+        }
+
+        .text-themed-secondary {
+            color: var(--text-secondary);
+        }
+
+        .text-themed-muted {
+            color: var(--text-muted);
+        }
+
+        .border-themed {
+            border-color: var(--border-secondary);
+        }
+
+        .bg-bg-primary {
+            background-color: var(--bg-primary);
+        }
+
+        .bg-bg-secondary {
+            background-color: var(--bg-secondary);
+        }
+
+        .bg-bg-tertiary {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Scrollbar for Reader */
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--border-primary);
+            border-radius: 20px;
+        }
+
+        /* 3D Oracle Card Animation Utilities */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        .oracle-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
     </style>
 </head>
 
@@ -1183,8 +1556,11 @@
         style="background: var(--bg-nav); border-color: var(--border-primary);">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center">
-                    <span class="serif-header text-xl sm:text-2xl font-bold tracking-tight text-themed">The Hermetic
+                <div class="flex items-center gap-3">
+                    <div class="hermetic-logo" onclick="navTo('hero')" title="Return to top">H</div>
+                    <span
+                        class="serif-header text-xl sm:text-2xl font-bold tracking-tight text-themed hidden sm:inline">The
+                        Hermetic
                         Codex</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
@@ -1198,6 +1574,10 @@
                         Tablet</button>
                     <button onclick="navTo('reflection')"
                         class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Self-Mastery</button>
+                    <button onclick="navTo('oracle-section')"
+                        class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Oracle</button>
+                    <button onclick="navTo('archives-section')"
+                        class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Archives</button>
 
                     <!-- Dark Mode Toggle -->
                     <button onclick="toggleDarkMode()" class="theme-toggle touch-target" aria-label="Toggle dark mode"
@@ -1253,6 +1633,10 @@
                     Emerald Tablet</button>
                 <button onclick="navTo('reflection')"
                     class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">Self-Mastery</button>
+                <button onclick="navTo('oracle-section')"
+                    class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">Oracle</button>
+                <button onclick="navTo('archives-section')"
+                    class="touch-target flex items-center w-full text-left px-4 py-3 rounded-lg text-base font-medium text-themed-secondary hover:bg-themed-tertiary ripple">Archives</button>
             </div>
         </div>
     </nav>
@@ -1345,34 +1729,45 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Interactive Transmutation Tool -->
                 <div class="bg-themed p-5 sm:p-6 rounded-xl border border-themed shadow-sm order-2 lg:order-1">
-                    <h3 class="serif-header text-lg sm:text-xl font-bold text-themed mb-3 sm:mb-4">Interactive
-                        Polarity Scale</h3>
+                    <h3 class="serif-header text-lg sm:text-xl font-bold text-themed mb-3 sm:mb-4">The Alchemist's Dial
+                    </h3>
                     <p class="text-xs sm:text-sm text-themed-muted mb-4 sm:mb-6">
-                        Select an emotional axis below. Use the slider to visualize transmutation — raising your
-                        vibration.
+                        Rotate the dial to transmute your emotional state. As above, so below — as within, so you
+                        become.
                     </p>
 
                     <div class="polarity-buttons mb-6">
-                        <button onclick="setPolarity('fear')" id="btn-fear" class="polarity-btn active ripple">Fear ↔
+                        <button onclick="setDialPolarity('fear')" id="btn-fear" class="polarity-btn active ripple">Fear
+                            ↔
                             Courage</button>
-                        <button onclick="setPolarity('grief')" id="btn-grief" class="polarity-btn ripple">Grief ↔
+                        <button onclick="setDialPolarity('grief')" id="btn-grief" class="polarity-btn ripple">Grief ↔
                             Peace</button>
-                        <button onclick="setPolarity('lethargy')" id="btn-lethargy" class="polarity-btn ripple">Lethargy
+                        <button onclick="setDialPolarity('lethargy')" id="btn-lethargy"
+                            class="polarity-btn ripple">Lethargy
                             ↔ Passion</button>
                     </div>
 
-                    <div class="chart-container">
-                        <canvas id="polarityChart"></canvas>
-                    </div>
-
-                    <div class="mt-6">
-                        <label class="block text-sm font-medium text-themed-secondary mb-3">Apply Willpower
-                            (Vibration)</label>
-                        <input type="range" id="vibrationSlider" min="0" max="100" value="20" class="w-full">
-                        <div class="flex justify-between text-xs text-themed-muted mt-2">
-                            <span>Lead (Passive)</span>
-                            <span>Gold (Active)</span>
+                    <div class="alchemy-dial-container">
+                        <div class="alchemy-dial" id="alchemyDial">
+                            <!-- Dial markers -->
+                            <div class="dial-markers" id="dialMarkers"></div>
+                            <!-- Pointer -->
+                            <div class="dial-pointer" id="dialPointer"></div>
+                            <!-- Center knob -->
+                            <div class="dial-knob"></div>
+                            <!-- Labels -->
+                            <div class="dial-labels">
+                                <span class="dial-label positive" id="dialLabelPos">Courage</span>
+                                <span class="dial-label negative" id="dialLabelNeg">Fear</span>
+                            </div>
                         </div>
+
+                        <div class="dial-value-display">
+                            <span class="dial-value" id="dialValue">20%</span>
+                            <span class="dial-state-label" id="dialStateLabel">Lead State</span>
+                        </div>
+
+                        <p class="transmutation-hint">Drag the dial clockwise to raise your vibration</p>
                     </div>
                 </div>
 
@@ -1655,6 +2050,10 @@
                 <button onclick="enterContemplation()" class="enter-contemplation">
                     ◎ Enter Contemplation
                 </button>
+                <button onclick="navTo('oracle-section')"
+                    class="nav-link text-sm font-medium hover:text-accent-gold transition-colors">Oracle</button>
+                <button onclick="navTo('archives-section')"
+                    class="nav-link text-sm font-medium hover:text-accent-gold transition-colors">Archives</button>
             </div>
         </section>
 
@@ -1884,6 +2283,7 @@
             renderTablet();
             initPolarityChart();
             initRadarChart();
+            initAlchemyDial();
 
             // Initialize scroll reveal after a brief delay
             setTimeout(initScrollReveal, 100);
@@ -2057,6 +2457,133 @@
 
             polarityChartInstance.update();
         }
+
+        // ===== ALCHEMY DIAL =====
+        let dialValue = 20;
+        let dialCurrentAxis = { neg: 'Fear', pos: 'Courage' };
+        let isDragging = false;
+
+        function initAlchemyDial() {
+            const dial = document.getElementById('alchemyDial');
+            const markersContainer = document.getElementById('dialMarkers');
+
+            if (!dial || !markersContainer) return;
+
+            // Create dial markers
+            for (let i = 0; i < 24; i++) {
+                const marker = document.createElement('div');
+                marker.className = 'dial-marker' + (i % 6 === 0 ? ' major' : '');
+                marker.style.transform = `rotate(${i * 15}deg)`;
+                markersContainer.appendChild(marker);
+            }
+
+            // Set initial pointer position
+            updateDialPointer(dialValue);
+
+            // Mouse events
+            dial.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+
+            // Touch events
+            dial.addEventListener('touchstart', startDrag, { passive: false });
+            document.addEventListener('touchmove', drag, { passive: false });
+            document.addEventListener('touchend', stopDrag);
+        }
+
+        function startDrag(e) {
+            e.preventDefault();
+            isDragging = true;
+            document.getElementById('alchemyDial').style.cursor = 'grabbing';
+        }
+
+        function stopDrag() {
+            isDragging = false;
+            const dial = document.getElementById('alchemyDial');
+            if (dial) dial.style.cursor = 'grab';
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const dial = document.getElementById('alchemyDial');
+            const rect = dial.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            // Calculate angle from center
+            let angle = Math.atan2(clientY - centerY, clientX - centerX);
+            angle = angle * (180 / Math.PI);
+
+            // Convert to dial value (0-100)
+            // Dial goes from bottom (0%) to top (100%)
+            // Bottom = 90deg, Top = -90deg
+            let value = ((90 - angle) / 180) * 100;
+            value = Math.max(0, Math.min(100, value));
+
+            dialValue = Math.round(value);
+            updateDialPointer(dialValue);
+            updateDialDisplay(dialValue);
+        }
+
+        function updateDialPointer(value) {
+            const pointer = document.getElementById('dialPointer');
+            if (!pointer) return;
+
+            // Convert value (0-100) to angle
+            // 0% = 180deg (bottom), 100% = 0deg (top)
+            const angle = 180 - (value * 1.8);
+            pointer.style.transform = `rotate(${angle}deg)`;
+        }
+
+        function updateDialDisplay(value) {
+            const valueEl = document.getElementById('dialValue');
+            const stateLabel = document.getElementById('dialStateLabel');
+
+            if (!valueEl || !stateLabel) return;
+
+            valueEl.textContent = value + '%';
+
+            // Update state label and styling based on value
+            if (value >= 70) {
+                stateLabel.textContent = `${dialCurrentAxis.pos} (Transmuted!)`;
+                stateLabel.classList.add('transmuted');
+                valueEl.classList.add('transmuted');
+            } else if (value >= 50) {
+                stateLabel.textContent = 'Transmuting...';
+                stateLabel.classList.remove('transmuted');
+                valueEl.classList.remove('transmuted');
+            } else {
+                stateLabel.textContent = `${dialCurrentAxis.neg} State`;
+                stateLabel.classList.remove('transmuted');
+                valueEl.classList.remove('transmuted');
+            }
+        }
+
+        function setDialPolarity(type) {
+            // Update button states
+            document.querySelectorAll('.polarity-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${type}`).classList.add('active');
+
+            // Update axis
+            if (type === 'fear') dialCurrentAxis = { neg: 'Fear', pos: 'Courage' };
+            if (type === 'grief') dialCurrentAxis = { neg: 'Grief', pos: 'Peace' };
+            if (type === 'lethargy') dialCurrentAxis = { neg: 'Lethargy', pos: 'Passion' };
+
+            // Update dial labels
+            document.getElementById('dialLabelPos').textContent = dialCurrentAxis.pos;
+            document.getElementById('dialLabelNeg').textContent = dialCurrentAxis.neg;
+
+            // Reset dial
+            dialValue = 20;
+            updateDialPointer(dialValue);
+            updateDialDisplay(dialValue);
+        }
+
 
         function initRadarChart() {
             const ctx = document.getElementById('radarChart').getContext('2d');
@@ -2468,6 +2995,666 @@
         };
 
     </script>
+
+    <!-- ORACLE SECTION -->
+    <section id="oracle-section" class="py-20 px-6 max-w-5xl mx-auto border-t border-themed bg-bg-tertiary">
+        <div class="text-center mb-12 fade-in">
+            <span class="text-accent-gold font-bold tracking-wider text-sm uppercase">Hermetic Divination</span>
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mt-2 mb-4">The Oracle of Principles</h2>
+            <div class="h-1 w-20 bg-accent-gold mx-auto mb-6"></div>
+            <p class="text-themed-secondary max-w-2xl mx-auto">
+                Consult the seven principles. Draw a triad of wisdom to guide your current path.
+                Focus your mind on a question, then reveal the cards.
+            </p>
+        </div>
+
+        <!-- Oracle Cards Container -->
+        <div class="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
+            <!-- Card 1 -->
+            <div id="oracle-card-0" onclick="flipOracleCard(0)"
+                class="oracle-card w-48 h-72 relative cursor-pointer perspective-1000 group">
+                <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                    <div
+                        class="card-front absolute inset-0 bg-gray-800 rounded-xl border-2 border-amber-600/50 flex items-center justify-center backface-hidden shadow-lg group-hover:shadow-glow">
+                        <span class="text-4xl text-amber-500/50">✦</span>
+                    </div>
+                    <div
+                        class="card-back absolute inset-0 bg-bg-secondary rounded-xl border-2 border-accent-gold flex flex-col items-center justify-center p-4 backface-hidden rotate-y-180 shadow-glow">
+                        <span id="oracle-num-0" class="text-accent-gold font-serif text-lg mb-2">I</span>
+                        <h3 id="oracle-title-0" class="text-xl font-bold text-center mb-2">Mentalism</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div id="oracle-card-1" onclick="flipOracleCard(1)"
+                class="oracle-card w-48 h-72 relative cursor-pointer perspective-1000 group">
+                <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                    <div
+                        class="card-front absolute inset-0 bg-gray-800 rounded-xl border-2 border-amber-600/50 flex items-center justify-center backface-hidden shadow-lg group-hover:shadow-glow">
+                        <span class="text-4xl text-amber-500/50">✦</span>
+                    </div>
+                    <div
+                        class="card-back absolute inset-0 bg-bg-secondary rounded-xl border-2 border-accent-gold flex flex-col items-center justify-center p-4 backface-hidden rotate-y-180 shadow-glow">
+                        <span id="oracle-num-1" class="text-accent-gold font-serif text-lg mb-2">II</span>
+                        <h3 id="oracle-title-1" class="text-xl font-bold text-center mb-2">Correspondence</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div id="oracle-card-2" onclick="flipOracleCard(2)"
+                class="oracle-card w-48 h-72 relative cursor-pointer perspective-1000 group">
+                <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                    <div
+                        class="card-front absolute inset-0 bg-gray-800 rounded-xl border-2 border-amber-600/50 flex items-center justify-center backface-hidden shadow-lg group-hover:shadow-glow">
+                        <span class="text-4xl text-amber-500/50">✦</span>
+                    </div>
+                    <div
+                        class="card-back absolute inset-0 bg-bg-secondary rounded-xl border-2 border-accent-gold flex flex-col items-center justify-center p-4 backface-hidden rotate-y-180 shadow-glow">
+                        <span id="oracle-num-2" class="text-accent-gold font-serif text-lg mb-2">III</span>
+                        <h3 id="oracle-title-2" class="text-xl font-bold text-center mb-2">Vibration</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Synthesis & Controls -->
+        <div class="text-center">
+            <div id="oracle-synthesis"
+                class="hidden mb-8 max-w-2xl mx-auto p-6 bg-bg-secondary rounded-xl border border-accent-gold/30 fade-in">
+                <h4 class="text-accent-gold font-serif font-bold mb-2">Hermetic Synthesis</h4>
+                <p id="oracle-synthesis-text" class="text-lg italic leading-relaxed">
+                    The cards reveal...
+                </p>
+            </div>
+
+            <button id="oracle-draw-btn" onclick="drawOracleSpread()"
+                class="px-8 py-3 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 text-white font-bold shadow-lg hover:shadow-glow hover:-translate-y-1 transition-all">
+                ✦ Draw New Spread ✦
+            </button>
+        </div>
+    </section>
+
+    <!-- LIBRARY ARCHIVES SECTION -->
+    <section id="archives-section" class="py-20 px-6 max-w-6xl mx-auto border-t border-themed">
+        <div class="text-center mb-12 fade-in">
+            <span class="text-accent-gold font-bold tracking-wider text-sm uppercase">The Sacred Library</span>
+            <h2 class="text-3xl md:text-4xl font-serif font-bold mt-2 mb-4">Wisdom Archives</h2>
+            <div class="h-1 w-20 bg-accent-gold mx-auto mb-6"></div>
+            <p class="text-themed-secondary max-w-2xl mx-auto">
+                Access foundational texts from Hermetic, Zoroastrian, and African wisdom traditions.
+                Search within texts, analyze word frequency, and take notes.
+            </p>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="flex flex-wrap justify-center gap-2 mb-10" id="category-filters">
+            <button onclick="filterByCategory('all')"
+                class="category-btn active px-4 py-2 rounded-full text-sm font-medium transition-all"
+                data-category="all">
+                📚 All Texts
+            </button>
+            <button onclick="filterByCategory('hermetic')"
+                class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-category="hermetic">
+                ⚗️ Hermetic
+            </button>
+            <button onclick="filterByCategory('zoroastrian')"
+                class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all"
+                data-category="zoroastrian">
+                🔥 Zoroastrian
+            </button>
+            <button onclick="filterByCategory('african')"
+                class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all" data-category="african">
+                🌍 African Wisdom
+            </button>
+        </div>
+
+        <!-- Dynamic Library Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="library-grid">
+            <!-- Cards injected via JS -->
+        </div>
+
+        <!-- Distill Button -->
+        <div class="text-center mt-12">
+            <button onclick="distillWisdom()"
+                class="px-8 py-3 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 text-white font-bold shadow-lg hover:shadow-glow hover:-translate-y-1 transition-all">
+                ✦ Distill Random Wisdom ✦
+            </button>
+        </div>
+    </section>
+
+    <!-- READER OVERLAY MODAL -->
+    <div id="reader-overlay"
+        class="fixed inset-0 z-50 bg-bg-primary/95 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none flex flex-col"
+        style="transition: opacity 0.3s;">
+        <style>
+            #reader-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .reader-panel {
+                display: none;
+            }
+
+            .reader-panel.active {
+                display: block;
+            }
+
+            .panel-tab.active {
+                background: var(--accent-gold);
+                color: white;
+            }
+
+            .search-highlight {
+                background: rgba(214, 158, 46, 0.3);
+                border-radius: 2px;
+                padding: 0 2px;
+            }
+
+            .search-highlight.current {
+                background: rgba(214, 158, 46, 0.6);
+            }
+        </style>
+
+        <!-- Reader Header -->
+        <div
+            class="flex items-center justify-between p-4 border-b border-themed bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="closeReader()" class="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
+                    <svg class="w-6 h-6 text-themed-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+                <div>
+                    <h2 id="reader-title" class="font-serif font-bold text-lg leading-tight">Book Title</h2>
+                    <p id="reader-author" class="text-xs text-themed-muted uppercase tracking-wider">Author</p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="toggleReaderPanel('search')"
+                    class="panel-tab px-3 py-2 text-xs font-bold uppercase tracking-wide border border-themed rounded-lg hover:bg-bg-tertiary transition-colors"
+                    data-panel="search">
+                    🔍 Search
+                </button>
+                <button onclick="toggleReaderPanel('analysis')"
+                    class="panel-tab px-3 py-2 text-xs font-bold uppercase tracking-wide border border-themed rounded-lg hover:bg-bg-tertiary transition-colors"
+                    data-panel="analysis">
+                    📊 Analysis
+                </button>
+                <button onclick="toggleReaderPanel('notes')"
+                    class="panel-tab px-3 py-2 text-xs font-bold uppercase tracking-wide border border-themed rounded-lg hover:bg-bg-tertiary transition-colors"
+                    data-panel="notes">
+                    📝 Notes
+                </button>
+            </div>
+        </div>
+
+        <!-- Reader Main Area -->
+        <div class="flex-1 flex overflow-hidden">
+            <!-- Reader Content -->
+            <div id="reader-content" class="flex-1 overflow-y-auto p-6 md:p-12 max-w-3xl mx-auto w-full custom-scroll">
+                <!-- Content injected via JS -->
+            </div>
+
+            <!-- Sidebar Panels -->
+            <div id="reader-sidebar"
+                class="w-80 border-l border-themed bg-bg-secondary hidden md:block overflow-y-auto">
+                <!-- Search Panel -->
+                <div id="search-panel" class="reader-panel p-4">
+                    <h3 class="font-bold mb-3">Search in Text</h3>
+                    <div class="flex gap-2 mb-4">
+                        <input type="text" id="reader-search-input" placeholder="Search..."
+                            class="flex-1 px-3 py-2 bg-bg-tertiary border border-themed rounded-lg text-sm focus:outline-none focus:border-accent-gold"
+                            onkeyup="handleReaderSearch(event)">
+                        <button onclick="executeReaderSearch()"
+                            class="px-3 py-2 bg-accent-gold text-white rounded-lg text-sm font-bold">
+                            Go
+                        </button>
+                    </div>
+                    <div id="search-results" class="text-sm text-themed-secondary">
+                        <!-- Search results will appear here -->
+                    </div>
+                    <div id="search-nav" class="flex gap-2 mt-4 hidden">
+                        <button onclick="navigateSearch('prev')" class="px-3 py-1 bg-bg-tertiary rounded text-sm">←
+                            Prev</button>
+                        <span id="search-position" class="text-sm text-themed-muted py-1">0/0</span>
+                        <button onclick="navigateSearch('next')" class="px-3 py-1 bg-bg-tertiary rounded text-sm">Next
+                            →</button>
+                    </div>
+                </div>
+
+                <!-- Analysis Panel -->
+                <div id="analysis-panel" class="reader-panel p-4">
+                    <h3 class="font-bold mb-3">Text Analysis</h3>
+                    <div id="analysis-stats" class="space-y-3">
+                        <!-- Stats will be injected here -->
+                    </div>
+                    <h4 class="font-bold mt-6 mb-3">Top 10 Words</h4>
+                    <div id="analysis-words" class="space-y-2">
+                        <!-- Top words will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Notes Panel -->
+                <div id="notes-panel" class="reader-panel p-4">
+                    <h3 class="font-bold mb-3">Your Notes</h3>
+                    <textarea id="note-input" placeholder="Write your thoughts..."
+                        class="w-full h-24 px-3 py-2 bg-bg-tertiary border border-themed rounded-lg text-sm resize-none focus:outline-none focus:border-accent-gold mb-3"></textarea>
+                    <button onclick="saveCurrentNote()"
+                        class="w-full px-4 py-2 bg-accent-gold text-white rounded-lg text-sm font-bold mb-4">
+                        Save Note
+                    </button>
+                    <div id="notes-list" class="space-y-3">
+                        <!-- Saved notes will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DISTILLATION MODAL -->
+    <div id="distillation-modal"
+        class="fixed inset-0 z-[60] bg-bg-primary/95 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none flex items-center justify-center p-6">
+        <div class="relative max-w-2xl w-full bg-bg-secondary border border-themed rounded-xl shadow-2xl p-8 md:p-10 transform transition-all duration-300 scale-95"
+            id="distillation-content">
+            <button onclick="closeDistillation()"
+                class="absolute top-4 right-4 p-2 rounded-full hover:bg-bg-tertiary transition-colors">
+                <svg class="w-6 h-6 text-themed-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+
+            <div class="text-center">
+                <div class="inline-block mb-6">
+                    <span class="text-4xl">✨</span>
+                </div>
+                <h3 class="text-accent-gold font-bold tracking-wider text-sm uppercase mb-6">Wisdom Distilled</h3>
+
+                <blockquote class="font-serif text-xl md:text-2xl italic leading-relaxed text-themed mb-8">
+                    "<span id="distillation-quote">...</span>"
+                </blockquote>
+
+                <cite class="not-italic text-themed-muted text-sm uppercase tracking-wide">
+                    — <span id="distillation-source">Source</span>
+                </cite>
+
+                <div class="mt-10 flex justify-center gap-4">
+                    <button onclick="distillWisdom()"
+                        class="px-6 py-2 rounded-full border border-accent-gold text-accent-gold font-bold text-sm hover:bg-accent-gold/10 transition-colors">
+                        Another
+                    </button>
+                    <button onclick="closeDistillation()"
+                        class="px-6 py-2 rounded-full bg-themed-tertiary text-themed-secondary font-bold text-sm hover:bg-themed hover:text-themed transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIBRARY OF WISDOM SCRIPTS -->
+    <script src="js/text_search.js"></script>
+    <script src="js/word_analyzer.js"></script>
+    <script src="js/notes_manager.js"></script>
+    <script src="js/texts/divine_pymander.js"></script>
+    <script src="js/texts/teachings_zoroaster.js"></script>
+    <script src="js/texts/unkulunkulu.js"></script>
+    <script src="js/library_data.js"></script>
+
+    <script>
+        // ... (Existing scripts will be merged or this placed carefully) ...
+
+        // ===== LIBRARY Logic =====
+
+        // Category icons and colors
+        const categoryStyles = {
+            hermetic: { icon: '⚗️', color: '#d69e2e', borderColor: 'amber-500/50' },
+            gnostic: { icon: '✨', color: '#9f7aea', borderColor: 'purple-500/50' },
+            zoroastrian: { icon: '🔥', color: '#ed8936', borderColor: 'orange-500/50' },
+            african: { icon: '🌍', color: '#48bb78', borderColor: 'green-500/50' }
+        };
+
+        // Render library grid
+        function renderLibraryGrid(filter = 'all') {
+            const grid = document.getElementById('library-grid');
+            if (!grid || !window.libraryData) return;
+
+            grid.innerHTML = '';
+
+            const filteredBooks = filter === 'all'
+                ? window.libraryData
+                : window.libraryData.filter(b => b.category === filter);
+
+            filteredBooks.forEach(book => {
+                const style = categoryStyles[book.category] || categoryStyles.hermetic;
+                const chapterCount = book.content?.length || 0;
+
+                const card = document.createElement('div');
+                card.className = 'library-card principle-card p-6 rounded-xl border border-themed cursor-pointer group transition-all hover:-translate-y-1';
+                card.setAttribute('data-category', book.category);
+                card.onclick = () => openBook(book.id);
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="h-12 w-12 rounded-xl flex items-center justify-center text-2xl" 
+                             style="background: ${style.color}15;">
+                            ${style.icon}
+                        </div>
+                        <span class="text-xs font-medium px-2 py-1 rounded-full" 
+                              style="background: ${style.color}20; color: ${style.color};">
+                            ${book.category}
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-1 font-serif group-hover:text-amber-500 transition-colors">${book.title}</h3>
+                    <p class="text-sm text-themed-muted mb-3">${book.author}</p>
+                    <p class="text-sm text-themed-secondary mb-4 line-clamp-2">${book.description}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-themed-muted">${chapterCount} chapters</span>
+                        <span class="text-sm font-bold uppercase tracking-wide group-hover:translate-x-1 transition-transform" 
+                              style="color: ${style.color};">
+                            Read →
+                        </span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            renderLibraryGrid(category);
+        }
+
+        function openLibrary() {
+            // Show library section/modal or scroll to it
+            navTo('archives-section');
+        }
+
+        // Initialize library on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            renderLibraryGrid('all');
+        });
+
+        function openBook(bookId) {
+            const book = window.libraryData.find(b => b.id === bookId);
+            if (!book) return;
+
+            // Store reference for panels
+            currentReaderBook = book;
+
+            document.getElementById('reader-title').textContent = book.title;
+            document.getElementById('reader-author').textContent = book.author;
+
+            const contentContainer = document.getElementById('reader-content');
+            contentContainer.innerHTML = ''; // Clear previous
+
+            // Render chapters
+            book.content.forEach((chapter, index) => {
+                const chapterEl = document.createElement('div');
+                chapterEl.className = 'chapter-block mb-8';
+                chapterEl.innerHTML = `
+        <h3 class="text-xl font-serif font-bold text-amber-700 dark:text-amber-500 mb-4">${chapter.title}</h3>
+        <div class="prose dark:prose-invert max-w-none font-serif text-lg leading-relaxed opacity-90">
+            ${chapter.text.split('\n\n').map(p => `<p class="mb-4">${p}</p>`).join('')}
+        </div>
+        `;
+                contentContainer.appendChild(chapterEl);
+            });
+
+            document.getElementById('reader-overlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReader() {
+            document.getElementById('reader-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+            // Close any open panels
+            document.querySelectorAll('.reader-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            currentReaderBook = null;
+        }
+
+        // ===== READER PANEL FUNCTIONALITY =====
+        let currentReaderBook = null;
+        let textSearchEngine = null;
+        let wordAnalyzer = null;
+        let notesManager = null;
+
+        function toggleReaderPanel(panelName) {
+            const panel = document.getElementById(`${panelName}-panel`);
+            const tabs = document.querySelectorAll('.panel-tab');
+            const panels = document.querySelectorAll('.reader-panel');
+
+            // Toggle off if already active
+            if (panel.classList.contains('active')) {
+                panel.classList.remove('active');
+                tabs.forEach(t => t.classList.remove('active'));
+                return;
+            }
+
+            // Deactivate all
+            panels.forEach(p => p.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+
+            // Activate selected
+            panel.classList.add('active');
+            document.querySelector(`[data-panel="${panelName}"]`).classList.add('active');
+
+            // Initialize panel content
+            if (panelName === 'analysis' && currentReaderBook) {
+                runTextAnalysis();
+            }
+            if (panelName === 'notes' && currentReaderBook) {
+                loadNotes();
+            }
+        }
+
+        // Search functionality
+        function handleReaderSearch(event) {
+            if (event.key === 'Enter') {
+                executeReaderSearch();
+            }
+        }
+
+        function executeReaderSearch() {
+            const query = document.getElementById('reader-search-input').value;
+            if (!query || !currentReaderBook) return;
+
+            // Get all text content
+            const fullText = currentReaderBook.content.map(c => c.text).join('\n\n');
+
+            if (!textSearchEngine) {
+                textSearchEngine = new TextSearchEngine();
+            }
+
+            const results = textSearchEngine.search(fullText, query);
+            const resultsContainer = document.getElementById('search-results');
+            const navContainer = document.getElementById('search-nav');
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-themed-muted">No results found.</p>';
+                navContainer.classList.add('hidden');
+                return;
+            }
+
+            resultsContainer.innerHTML = results.slice(0, 10).map((r, i) => `
+                <div class="p-2 bg-bg-tertiary rounded mb-2 cursor-pointer hover:bg-accent-gold/10" onclick="scrollToSearchResult(${i})">
+                    <p class="text-xs text-themed-muted">Match ${i + 1}</p>
+                    <p class="text-sm">...${r.context}...</p>
+                </div>
+            `).join('');
+
+            navContainer.classList.remove('hidden');
+            document.getElementById('search-position').textContent = `1/${results.length}`;
+        }
+
+        function scrollToSearchResult(index) {
+            // Simple scroll to highlight - could be enhanced
+            const contentDiv = document.getElementById('reader-content');
+            const query = document.getElementById('reader-search-input').value;
+
+            // Clear previous highlights
+            contentDiv.innerHTML = contentDiv.innerHTML.replace(/<mark class="search-highlight[^"]*">/g, '').replace(/<\/mark>/g, '');
+
+            // Add new highlights
+            const regex = new RegExp(`(${query})`, 'gi');
+            contentDiv.innerHTML = contentDiv.innerHTML.replace(regex, '<mark class="search-highlight">$1</mark>');
+
+            // Scroll to first match
+            const highlight = contentDiv.querySelector('.search-highlight');
+            if (highlight) {
+                highlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                highlight.classList.add('current');
+            }
+        }
+
+        // Analysis functionality
+        function runTextAnalysis() {
+            if (!currentReaderBook) return;
+
+            const fullText = currentReaderBook.content.map(c => c.text).join('\n\n');
+
+            if (!wordAnalyzer) {
+                wordAnalyzer = new WordAnalyzer();
+            }
+
+            const stats = wordAnalyzer.getStats(fullText);
+            const topWords = wordAnalyzer.getTopWords(fullText, 10);
+
+            document.getElementById('analysis-stats').innerHTML = `
+                <div class="flex justify-between p-2 bg-bg-tertiary rounded">
+                    <span class="text-themed-muted">Word Count</span>
+                    <span class="font-bold">${stats.wordCount.toLocaleString()}</span>
+                </div>
+                <div class="flex justify-between p-2 bg-bg-tertiary rounded">
+                    <span class="text-themed-muted">Chapters</span>
+                    <span class="font-bold">${currentReaderBook.content.length}</span>
+                </div>
+                <div class="flex justify-between p-2 bg-bg-tertiary rounded">
+                    <span class="text-themed-muted">Reading Time</span>
+                    <span class="font-bold">${stats.readingTime} min</span>
+                </div>
+                <div class="flex justify-between p-2 bg-bg-tertiary rounded">
+                    <span class="text-themed-muted">Unique Words</span>
+                    <span class="font-bold">${stats.uniqueWords.toLocaleString()}</span>
+                </div>
+            `;
+
+            document.getElementById('analysis-words').innerHTML = topWords.map((w, i) => `
+                <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 flex items-center justify-center bg-accent-gold/20 text-accent-gold text-xs font-bold rounded">${i + 1}</span>
+                    <span class="flex-1 text-sm">${w.word}</span>
+                    <span class="text-xs text-themed-muted">${w.count}×</span>
+                </div>
+            `).join('');
+        }
+
+        // Notes functionality
+        function loadNotes() {
+            if (!currentReaderBook) return;
+
+            if (!notesManager) {
+                notesManager = new NotesManager();
+            }
+
+            const notes = notesManager.getNotes(currentReaderBook.id);
+            const notesList = document.getElementById('notes-list');
+
+            if (notes.length === 0) {
+                notesList.innerHTML = '<p class="text-themed-muted text-sm">No notes yet. Add your first note above!</p>';
+                return;
+            }
+
+            notesList.innerHTML = notes.map(note => `
+                <div class="p-3 bg-bg-tertiary rounded-lg">
+                    <p class="text-sm mb-2">${note.text}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-themed-muted">${new Date(note.createdAt).toLocaleDateString()}</span>
+                        <button onclick="deleteNote('${note.id}')" class="text-xs text-red-500 hover:text-red-400">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function saveCurrentNote() {
+            if (!currentReaderBook) return;
+
+            const input = document.getElementById('note-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            if (!notesManager) {
+                notesManager = new NotesManager();
+            }
+
+            notesManager.addNote(currentReaderBook.id, text);
+            input.value = '';
+            loadNotes();
+        }
+
+        function deleteNote(noteId) {
+            if (!notesManager) return;
+            notesManager.deleteNote(noteId);
+            loadNotes();
+        }
+
+        // Search/Distill feature (Premium Modal)
+        function distillWisdom() {
+            const allBooks = window.libraryData;
+            if (!allBooks || allBooks.length === 0) return;
+
+            // Random selection
+            const randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
+            const randomChapter = randomBook.content[Math.floor(Math.random() * randomBook.content.length)];
+            // Filter out empty paragraphs
+            const paragraphs = randomChapter.text.split('\n\n').filter(p => p.trim().length > 0);
+            const randomPara = paragraphs[Math.floor(Math.random() * paragraphs.length)];
+
+            // Populate Modal
+            document.getElementById('distillation-quote').textContent = randomPara;
+            document.getElementById('distillation-source').textContent = randomBook.title;
+
+            // Show Modal
+            const modal = document.getElementById('distillation-modal');
+            const content = document.getElementById('distillation-content');
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+
+            // Animate content scale
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDistillation() {
+            const modal = document.getElementById('distillation-modal');
+            const content = document.getElementById('distillation-content');
+
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+
+            document.body.style.overflow = '';
+        }
+    </script>
 </body>
+
 
 </html>
