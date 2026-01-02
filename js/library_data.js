@@ -31,23 +31,14 @@ window.libraryData = [
     {
         id: "kybalion",
         title: "The Kybalion",
-        author: "The Three Initiates",
+        author: "The Three Initiates (1908)",
         category: "hermetic",
-        description: "A Study of The Hermetic Philosophy of Ancient Egypt and Greece.",
-        content: [
-            {
-                title: "Introduction",
-                text: "We take great pleasure in presenting to the attention of students and investigators of the Secret Doctrines this little work based upon the world-old Hermetic Teachings. There has been so little written upon this subject, not withstanding the countless references to the Teachings in the many works upon occultism, that the many earnest searchers after the Arcane Truths will doubtless welcome the appearance of this present volume.\n\nThe purpose of this work is not the enunciation of any special philosophy or doctrine, but rather is to give to the students a statement of the Truth that will serve to reconcile the many bits of occult knowledge that they may have acquired."
-            },
-            {
-                title: "Chapter I: The Hermetic Philosophy",
-                text: "\"The lips of wisdom are closed, except to the ears of Understanding\" -- The Kybalion.\n\nFrom old Egypt have come the fundamental esoteric and occult teachings which have so strongly influenced the philosophies of all races, nations and peoples, for several thousand years. Egypt, the home of the Pyramids and the Sphinx, was the birthplace of the Hidden Wisdom and Mystic Teachings."
-            },
-            {
-                title: "Chapter II: The Seven Hermetic Principles",
-                text: "\"The Principles of Truth are Seven; he who knows these, understandingly, possesses the Magic Key before whose touch all the Doors of the Temple fly open.\" -- The Kybalion.\n\nThe Seven Hermetic Principles, upon which the entire Hermetic Philosophy is based, are as follows:\n\n1. The Principle of Mentalism - THE ALL IS MIND; The Universe is Mental.\n2. The Principle of Correspondence - As above, so below; as below, so above.\n3. The Principle of Vibration - Nothing rests; everything moves; everything vibrates.\n4. The Principle of Polarity - Everything is Dual; everything has poles.\n5. The Principle of Rhythm - Everything flows, out and in; everything has its tides.\n6. The Principle of Cause and Effect - Every Cause has its Effect; every Effect has its Cause.\n7. The Principle of Gender - Gender is in everything; everything has its Masculine and Feminine Principles."
-            }
-        ]
+        source: "sacred-texts.com",
+        description: "A study of the Hermetic Philosophy of Ancient Egypt and Greece, presenting the Seven Hermetic Principles that form the foundation of all occult teachings.",
+        dataFile: "js/texts/kybalion.js",
+        get content() {
+            return window.textData?.['kybalion']?.content || [];
+        }
     },
     {
         id: "corpus-hermeticum",

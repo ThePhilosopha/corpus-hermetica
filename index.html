@@ -3144,9 +3144,15 @@
             }
         </style>
 
+        <!-- Reading Progress Bar -->
+        <div id="reading-progress-bar" class="h-1 bg-accent-gold/30 fixed top-0 left-0 right-0 z-20">
+            <div id="reading-progress-fill" class="h-full bg-accent-gold transition-all duration-150"
+                style="width: 0%;"></div>
+        </div>
+
         <!-- Reader Header -->
         <div
-            class="flex items-center justify-between p-4 border-b border-themed bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-10">
+            class="flex items-center justify-between p-4 border-b border-themed bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-10 mt-1">
             <div class="flex items-center gap-4">
                 <button onclick="closeReader()" class="p-2 rounded-full hover:bg-bg-tertiary transition-colors">
                     <svg class="w-6 h-6 text-themed-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -3159,7 +3165,21 @@
                     <p id="reader-author" class="text-xs text-themed-muted uppercase tracking-wider">Author</p>
                 </div>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center">
+                <!-- Font Size Controls -->
+                <div class="flex items-center gap-1 mr-2 border-r border-themed pr-3">
+                    <button onclick="adjustFontSize(-1)"
+                        class="p-2 rounded hover:bg-bg-tertiary transition-colors text-xs font-bold"
+                        title="Decrease font size">A-</button>
+                    <button onclick="adjustFontSize(1)"
+                        class="p-2 rounded hover:bg-bg-tertiary transition-colors text-base font-bold"
+                        title="Increase font size">A+</button>
+                </div>
+                <button onclick="toggleReaderPanel('chapters')"
+                    class="panel-tab px-3 py-2 text-xs font-bold uppercase tracking-wide border border-themed rounded-lg hover:bg-bg-tertiary transition-colors"
+                    data-panel="chapters">
+                    📖 Chapters
+                </button>
                 <button onclick="toggleReaderPanel('search')"
                     class="panel-tab px-3 py-2 text-xs font-bold uppercase tracking-wide border border-themed rounded-lg hover:bg-bg-tertiary transition-colors"
                     data-panel="search">
@@ -3188,6 +3208,13 @@
             <!-- Sidebar Panels -->
             <div id="reader-sidebar"
                 class="w-80 border-l border-themed bg-bg-secondary hidden md:block overflow-y-auto">
+                <!-- Chapters Panel -->
+                <div id="chapters-panel" class="reader-panel p-4">
+                    <h3 class="font-bold mb-3">📖 Chapters</h3>
+                    <div id="chapters-list" class="space-y-1">
+                        <!-- Chapters dynamically injected -->
+                    </div>
+                </div>
                 <!-- Search Panel -->
                 <div id="search-panel" class="reader-panel p-4">
                     <h3 class="font-bold mb-3">Search in Text</h3>
@@ -3289,6 +3316,7 @@
     <script src="js/texts/divine_pymander.js"></script>
     <script src="js/texts/teachings_zoroaster.js"></script>
     <script src="js/texts/unkulunkulu.js"></script>
+    <script src="js/texts/kybalion.js"></script>
     <script src="js/library_data.js"></script>
 
     <script>
@@ -3387,30 +3415,125 @@
             const contentContainer = document.getElementById('reader-content');
             contentContainer.innerHTML = ''; // Clear previous
 
-            // Render chapters
+            // Render chapters with IDs for navigation
             book.content.forEach((chapter, index) => {
                 const chapterEl = document.createElement('div');
                 chapterEl.className = 'chapter-block mb-8';
+                chapterEl.id = `chapter-${index}`;
                 chapterEl.innerHTML = `
         <h3 class="text-xl font-serif font-bold text-amber-700 dark:text-amber-500 mb-4">${chapter.title}</h3>
-        <div class="prose dark:prose-invert max-w-none font-serif text-lg leading-relaxed opacity-90">
+        <div class="prose dark:prose-invert max-w-none font-serif leading-relaxed opacity-90 reader-text">
             ${chapter.text.split('\n\n').map(p => `<p class="mb-4">${p}</p>`).join('')}
         </div>
         `;
                 contentContainer.appendChild(chapterEl);
             });
 
+            // Populate chapters panel
+            populateChaptersPanel(book);
+
+            // Apply saved font size
+            applyFontSize();
+
             document.getElementById('reader-overlay').classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // Restore reading position after a brief delay
+            setTimeout(() => {
+                restoreReadingPosition(bookId);
+                setupScrollTracking(bookId);
+            }, 100);
         }
 
         function closeReader() {
+            // Save reading position before closing
+            if (currentReaderBook) {
+                saveReadingPosition(currentReaderBook.id);
+            }
             document.getElementById('reader-overlay').classList.remove('active');
             document.body.style.overflow = '';
             // Close any open panels
             document.querySelectorAll('.reader-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            // Reset progress bar
+            document.getElementById('reading-progress-fill').style.width = '0%';
             currentReaderBook = null;
+        }
+
+        // ===== ENHANCED READER FEATURES =====
+        let readerFontSize = parseInt(localStorage.getItem('readerFontSize') || '18');
+
+        function populateChaptersPanel(book) {
+            const chaptersContainer = document.getElementById('chapters-list');
+            if (!chaptersContainer) return;
+            chaptersContainer.innerHTML = book.content.map((chapter, index) => `
+                <button onclick="scrollToChapter(${index})" 
+                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-bg-tertiary text-sm transition-colors truncate chapter-nav-item"
+                    data-chapter="${index}">
+                    ${chapter.title}
+                </button>
+            `).join('');
+        }
+
+        function scrollToChapter(index) {
+            const chapterEl = document.getElementById(`chapter-${index}`);
+            if (chapterEl) {
+                chapterEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Highlight active chapter in nav
+                document.querySelectorAll('.chapter-nav-item').forEach(el => el.classList.remove('bg-accent-gold/20'));
+                document.querySelector(`[data-chapter="${index}"]`)?.classList.add('bg-accent-gold/20');
+            }
+        }
+
+        function adjustFontSize(delta) {
+            readerFontSize = Math.max(14, Math.min(28, readerFontSize + delta * 2));
+            localStorage.setItem('readerFontSize', readerFontSize);
+            applyFontSize();
+        }
+
+        function applyFontSize() {
+            document.querySelectorAll('.reader-text').forEach(el => {
+                el.style.fontSize = `${readerFontSize}px`;
+            });
+        }
+
+        function saveReadingPosition(bookId) {
+            const contentContainer = document.getElementById('reader-content');
+            if (!contentContainer) return;
+            const scrollPercent = (contentContainer.scrollTop / (contentContainer.scrollHeight - contentContainer.clientHeight)) * 100;
+            const positions = JSON.parse(localStorage.getItem('readingPositions') || '{}');
+            positions[bookId] = {
+                scrollPercent: scrollPercent,
+                lastRead: Date.now()
+            };
+            localStorage.setItem('readingPositions', JSON.stringify(positions));
+        }
+
+        function restoreReadingPosition(bookId) {
+            const contentContainer = document.getElementById('reader-content');
+            if (!contentContainer) return;
+            const positions = JSON.parse(localStorage.getItem('readingPositions') || '{}');
+            if (positions[bookId]) {
+                const scrollPercent = positions[bookId].scrollPercent || 0;
+                contentContainer.scrollTop = (scrollPercent / 100) * (contentContainer.scrollHeight - contentContainer.clientHeight);
+            }
+        }
+
+        function setupScrollTracking(bookId) {
+            const contentContainer = document.getElementById('reader-content');
+            if (!contentContainer) return;
+
+            contentContainer.addEventListener('scroll', () => {
+                // Update progress bar
+                const scrollPercent = (contentContainer.scrollTop / (contentContainer.scrollHeight - contentContainer.clientHeight)) * 100;
+                document.getElementById('reading-progress-fill').style.width = `${Math.min(100, scrollPercent)}%`;
+
+                // Debounced save (every 2 seconds of scrolling)
+                clearTimeout(contentContainer.scrollSaveTimeout);
+                contentContainer.scrollSaveTimeout = setTimeout(() => {
+                    saveReadingPosition(bookId);
+                }, 2000);
+            });
         }
 
         // ===== READER PANEL FUNCTIONALITY =====
