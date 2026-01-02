@@ -90,65 +90,53 @@
             font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
         }
 
-        /* ===== DARK MODE TOGGLE ===== */
+        /* ===== DARK MODE BUTTON ===== */
         .theme-toggle {
-            position: relative;
-            width: 56px;
-            height: 28px;
-            background: var(--border-primary);
-            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
             cursor: pointer;
             transition: all var(--transition-base);
-            border: 2px solid var(--border-secondary);
+            border: 2px solid var(--border-primary);
         }
 
         .theme-toggle:hover {
+            border-color: var(--accent-gold);
             box-shadow: var(--shadow-glow);
+            transform: scale(1.05);
         }
 
-        .theme-toggle::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 20px;
-            height: 20px;
-            background: var(--bg-secondary);
-            border-radius: 50%;
-            transition: transform var(--transition-bounce);
-            box-shadow: var(--shadow-md);
-        }
-
-        .dark .theme-toggle::before {
-            transform: translateX(28px);
+        .theme-toggle:active {
+            transform: scale(0.95);
         }
 
         .theme-toggle .sun-icon,
         .theme-toggle .moon-icon {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 14px;
-            height: 14px;
-            transition: opacity var(--transition-base);
+            width: 22px;
+            height: 22px;
+            transition: all var(--transition-bounce);
         }
 
+        /* Light mode: show sun, hide moon */
         .theme-toggle .sun-icon {
-            right: 6px;
-            opacity: 1;
+            display: block;
         }
 
         .theme-toggle .moon-icon {
-            left: 6px;
-            opacity: 0.4;
+            display: none;
         }
 
+        /* Dark mode: show moon, hide sun */
         .dark .theme-toggle .sun-icon {
-            opacity: 0.4;
+            display: none;
         }
 
         .dark .theme-toggle .moon-icon {
-            opacity: 1;
+            display: block;
         }
 
         /* Chart Container - Mobile First */
@@ -1579,35 +1567,35 @@
                     <button onclick="navTo('archives-section')"
                         class="nav-link text-themed-secondary hover:text-themed px-3 py-2 rounded-md text-sm font-medium">Archives</button>
 
-                    <!-- Dark Mode Toggle -->
+                    <!-- Dark Mode Button -->
                     <button onclick="toggleDarkMode()" class="theme-toggle touch-target" aria-label="Toggle dark mode"
                         title="Toggle dark mode">
-                        <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20"
-                            style="color: var(--accent-gold);">
-                            <path fill-rule="evenodd"
-                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                clip-rule="evenodd" />
+                        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--accent-gold);" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
-                        <svg class="moon-icon" fill="currentColor" viewBox="0 0 20 20"
-                            style="color: var(--accent-gold);">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--accent-gold);" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
                     </button>
                 </div>
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center gap-3">
-                    <!-- Mobile Dark Mode Toggle -->
+                    <!-- Mobile Dark Mode Button -->
                     <button onclick="toggleDarkMode()" class="theme-toggle touch-target" aria-label="Toggle dark mode"
                         title="Toggle dark mode">
-                        <svg class="sun-icon" fill="currentColor" viewBox="0 0 20 20"
-                            style="color: var(--accent-gold);">
-                            <path fill-rule="evenodd"
-                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                clip-rule="evenodd" />
+                        <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--accent-gold);" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
-                        <svg class="moon-icon" fill="currentColor" viewBox="0 0 20 20"
-                            style="color: var(--accent-gold);">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                        <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--accent-gold);" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
                     </button>
                     <button onclick="toggleMobileMenu()" class="hamburger touch-target" id="hamburger"
