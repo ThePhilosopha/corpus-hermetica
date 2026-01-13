@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description"
+        content="Divine Alignment Meditation: A journey of peace, kindness, and connection to the higher power.">
+    <meta name="theme-color" content="#292524">
+    <title>Divine Alignment | The Hermetic Codex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        gold: {
+                            400: '#f6e05e',
+                            500: '#d69e2e',
+                            600: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'breathe-in': 'breatheIn 4s ease-out forwards',
+                        'breathe-out': 'breatheOut 4s ease-in forwards',
+                        'pulse-glow': 'pulseGlow 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        breatheIn: {
+                            '0%': { transform: 'scale(1)', opacity: '0.8' },
+                            '100%': { transform: 'scale(1.5)', opacity: '0.4' },
+                        },
+                        breatheOut: {
+                            '0%': { transform: 'scale(1.5)', opacity: '0.4' },
+                            '100%': { transform: 'scale(1)', opacity: '0.8' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 10px rgba(214, 158, 46, 0.2)' },
+                            '50%': { boxShadow: '0 0 30px rgba(214, 158, 46, 0.5)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base Styles & glassmorphism */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a09;
+            color: #fafaf9;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        .glass-card {
+            background: rgba(28, 25, 23, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #f6e05e, #d69e2e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Meditation Ring Animation */
+        .meditation-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(214, 158, 46, 0.3);
+            pointer-events: none;
+            z-index: 0;
+            transition: all 4s ease-in-out;
+        }
+
+        .ring-1 {
+            width: 200px;
+            height: 200px;
+            animation-delay: 0s;
+        }
+
+        .ring-2 {
+            width: 200px;
+            height: 200px;
+            animation-delay: 1s;
+            border-color: rgba(214, 158, 46, 0.15);
+        }
+
+        .ring-3 {
+            width: 200px;
+            height: 200px;
+            animation-delay: 2s;
+            border-color: rgba(214, 158, 46, 0.05);
+        }
+
+        /* Transition States */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .fade-exit {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-exit-active {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex flex-col items-center justify-center relative selection:bg-gold-500 selection:text-white">
+
+    <!-- Canvas Background -->
+    <canvas id="particles"></canvas>
+
+    <!-- Nav / Close -->
+    <nav class="absolute top-0 w-full p-6 flex justify-between items-center z-50">
+        <a href="index.html" class="glass-card rounded-full p-3 hover:bg-stone-800 transition-colors group"
+            aria-label="Return to Library">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-stone-400 group-hover:text-gold-400" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </a>
+        <div class="glass-card px-4 py-1 rounded-full border border-stone-800">
+            <span class="text-xs font-serif uppercase tracking-widest text-gold-500">Divine Alignment</span>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="w-full max-w-2xl px-6 relative z-10 flex flex-col items-center text-center">
+
+        <!-- Welcome / Setup View -->
+        <div id="setup-view" class="w-full transition-all duration-700">
+            <h1 class="font-serif text-5xl md:text-7xl font-bold mb-4 text-gold-gradient tracking-tight animate-float">
+                Sanctum</h1>
+            <p class="text-stone-400 text-lg mb-6 max-w-md mx-auto font-light leading-relaxed">
+                Connect with the infinite source. Align with peace, goodness, and your higher power through guided
+                contemplation.
+            </p>
+
+            <!-- Embedded Video Section -->
+            <div class="glass-card p-4 rounded-2xl mb-6 w-full max-w-md mx-auto backdrop-blur-md">
+                <details class="group">
+                    <summary
+                        class="flex items-center justify-between cursor-pointer text-stone-500 text-xs uppercase tracking-wider font-semibold">
+                        <span>Inspiration: Alan Watts</span>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </summary>
+                    <div class="mt-4 aspect-video rounded-lg overflow-hidden">
+                        <iframe src="https://www.youtube.com/embed/pXamE8E8JZw?start=1418"
+                            title="The Meaning of Life - Alan Watts" class="w-full h-full" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </details>
+            </div>
+
+            <!-- Meditation Theme Selector -->
+            <div class="glass-card p-6 rounded-2xl mb-4 w-full max-w-md mx-auto backdrop-blur-md">
+                <label class="block text-stone-500 text-xs uppercase tracking-wider mb-4 font-semibold">Choose Your
+                    Path</label>
+                <div class="grid grid-cols-1 gap-3">
+                    <button
+                        class="theme-btn active flex items-center gap-3 rounded-lg p-4 text-left border border-gold-500/50 bg-gold-500/10 transition-all hover:bg-gold-500/20"
+                        data-theme="alignment">
+                        <div
+                            class="w-8 h-8 rounded-full bg-gold-500/20 flex items-center justify-center text-gold-400 font-serif font-bold">
+                            I</div>
+                        <div>
+                            <span class="block text-sm font-semibold text-gold-400">Divine Alignment</span>
+                            <span class="block text-xs text-stone-500">Connect with your higher self and radiate
+                                light</span>
+                        </div>
+                    </button>
+                    <button
+                        class="theme-btn flex items-center gap-3 rounded-lg p-4 text-left border border-stone-700 transition-all hover:border-stone-500 hover:bg-stone-800/50"
+                        data-theme="present">
+                        <div
+                            class="w-8 h-8 rounded-full bg-stone-700 flex items-center justify-center text-stone-400 font-serif font-bold">
+                            II</div>
+                        <div>
+                            <span class="block text-sm font-semibold text-stone-300">Present Moment</span>
+                            <span class="block text-xs text-stone-500">Just be alive. The meaning is now.</span>
+                        </div>
+                    </button>
+                    <button
+                        class="theme-btn flex items-center gap-3 rounded-lg p-4 text-left border border-stone-700 transition-all hover:border-stone-500 hover:bg-stone-800/50"
+                        data-theme="unity">
+                        <div
+                            class="w-8 h-8 rounded-full bg-stone-700 flex items-center justify-center text-stone-400 font-serif font-bold">
+                            III</div>
+                        <div>
+                            <span class="block text-sm font-semibold text-stone-300">Unity with All</span>
+                            <span class="block text-xs text-stone-500">Feel your inseparability from the universe</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl mb-8 w-full max-w-sm mx-auto backdrop-blur-md">
+                <label class="block text-stone-500 text-xs uppercase tracking-wider mb-4 font-semibold">Select
+                    Duration</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <button
+                        class="duration-btn active rounded-lg py-3 text-sm font-medium border border-gold-500/50 bg-gold-500/10 text-gold-400 transition-all"
+                        data-time="300">
+                        5m
+                    </button>
+                    <button
+                        class="duration-btn rounded-lg py-3 text-sm font-medium border border-stone-700 text-stone-500 hover:border-stone-500 hover:text-stone-300 transition-all"
+                        data-time="600">
+                        10m
+                    </button>
+                    <button
+                        class="duration-btn rounded-lg py-3 text-sm font-medium border border-stone-700 text-stone-500 hover:border-stone-500 hover:text-stone-300 transition-all"
+                        data-time="900">
+                        15m
+                    </button>
+                </div>
+            </div>
+
+            <button id="start-btn"
+                class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-serif font-semibold tracking-wide text-stone-900 transition-all duration-300 bg-gold-500 rounded-full hover:bg-gold-400 hover:scale-105 shadow-glow">
+                <span class="relative z-10">Begin Journey</span>
+                <div
+                    class="absolute inset-0 rounded-full opacity-50 bg-gold-400 blur-lg group-hover:opacity-75 transition-opacity duration-300">
+                </div>
+            </button>
+        </div>
+
+        <!-- Meditation Active View -->
+        <div id="active-view" class="hidden w-full flex flex-col items-center justify-center min-h-[60vh]">
+
+            <!-- Background Audio Player (YouTube) -->
+            <div id="audio-player-container"
+                class="fixed bottom-4 right-4 z-50 glass-card rounded-xl overflow-hidden shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-2 p-2 bg-stone-900/80">
+                    <button id="toggle-audio-btn"
+                        class="w-8 h-8 flex items-center justify-center text-gold-500 hover:text-gold-400 transition-colors"
+                        title="Toggle Audio">
+                        <svg id="audio-icon-on" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                        <svg id="audio-icon-off" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                        </svg>
+                    </button>
+                    <span class="text-xs text-stone-400 pr-2">Alan Watts</span>
+                </div>
+                <div id="youtube-player-wrapper" class="w-64 h-36 bg-black">
+                    <iframe id="youtube-audio-player" src="" title="Background Audio - Alan Watts" class="w-full h-full"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- Breathing Visualizer -->
+            <div class="relative w-64 h-64 mb-12 flex items-center justify-center">
+                <div id="breath-circle-1"
+                    class="meditation-ring absolute inset-0 rounded-full border-2 border-gold-500/30"></div>
+                <div id="breath-circle-2"
+                    class="meditation-ring absolute inset-0 rounded-full border border-gold-500/20 scale-90"></div>
+                <div id="breath-circle-3"
+                    class="meditation-ring absolute inset-0 rounded-full border border-gold-500/10 scale-75"></div>
+
+                <!-- Center Focus -->
+                <div class="w-4 h-4 rounded-full bg-gold-500/80 shadow-[0_0_20px_rgba(214,158,46,0.5)] z-10"></div>
+            </div>
+
+            <!-- Text Content -->
+            <div id="guide-text-container" class="h-32 flex items-center justify-center mb-8">
+                <p id="guide-text"
+                    class="text-2xl md:text-3xl font-serif text-stone-200 leading-relaxed max-w-xl transition-all duration-1000">
+                    Prepare yourself...
+                </p>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="w-full max-w-xs mb-6">
+                <!-- Time Display -->
+                <div class="flex justify-between text-xs text-stone-500 mb-2 font-mono">
+                    <span id="time-elapsed">0:00</span>
+                    <span id="time-total">5:00</span>
+                </div>
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-stone-800 rounded-full overflow-hidden">
+                    <div id="progress-bar"
+                        class="h-full bg-gradient-to-r from-gold-600 via-gold-400 to-gold-600 w-0 transition-all duration-1000 ease-linear rounded-full">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex gap-6">
+                <button id="stop-btn"
+                    class="text-stone-500 hover:text-stone-300 transition-colors text-sm uppercase tracking-widest text-[10px]">End
+                    Session</button>
+            </div>
+        </div>
+
+        <!-- Completion View -->
+        <div id="completion-view" class="hidden w-full transition-all duration-700 opacity-0 transform translate-y-4">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-6 text-gold-gradient">Peace be with you.</h2>
+            <p class="text-stone-400 mb-10 max-w-md mx-auto">
+                You have completed your alignment. Carry this goodness and understanding into your world.
+            </p>
+            <button onclick="location.reload()"
+                class="px-8 py-3 bg-stone-800 border border-stone-700 rounded-full text-stone-300 hover:text-white hover:border-gold-500/50 transition-all">
+                Return
+            </button>
+        </div>
+
+    </main>
+
+    <script src="js/meditation.js"></script>
+</body>
+
+</html>

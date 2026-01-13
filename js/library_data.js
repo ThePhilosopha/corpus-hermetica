@@ -89,6 +89,18 @@ window.libraryData = [
         get content() {
             return window.textData?.['unkulunkulu']?.content || [];
         }
+    },
+    {
+        id: "eternalised-hermeticism",
+        title: "Hermeticism: The Ancient Wisdom of Hermes Trismegistus",
+        author: "Eternalised",
+        category: "hermetic",
+        source: "eternalisedofficial.com",
+        description: "A comprehensive exploration of Hermetic teachings, covering the legendary figure of Hermes Trismegistus, the Corpus Hermeticum, gnosis, the Hermetic universe, and the spiritual path to divine union.",
+        dataFile: "js/texts/eternalised_hermeticism.js",
+        get content() {
+            return window.textData?.['eternalised-hermeticism']?.content || [];
+        }
     }
 ];
 
